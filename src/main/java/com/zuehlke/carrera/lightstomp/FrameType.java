@@ -1,7 +1,7 @@
 package com.zuehlke.carrera.lightstomp;
 
 /**
- * Represents the command type of a {@link lightstomp.StompFrame}
+ * Represents the command type of a lightstomp.StompFrame
  */
 public enum FrameType {
     /**

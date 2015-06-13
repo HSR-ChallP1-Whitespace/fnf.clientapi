@@ -71,7 +71,7 @@ public class RaceTrackToRelayConnection extends RelayConnection {
      * Send an announce message to the backend server
      * to notify it about the existence of this race-track.
      *
-     * Note: The backend expects announce-messages from a racetrack in an interval < 1 second,
+     * Note: The backend expects announce-messages from a racetrack in an interval below 1 second,
      * thus this method should be called repeatedly on a distinct timer thread.
      *
      * @param optionalUrl

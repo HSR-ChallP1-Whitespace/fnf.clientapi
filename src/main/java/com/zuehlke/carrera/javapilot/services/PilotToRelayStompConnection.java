@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.function.Consumer;
 
-/**
- */
 public class PilotToRelayStompConnection extends RelayConnection implements PilotToRelayConnection {
 
     private static final Logger LOG = LoggerFactory.getLogger(PilotToRelayStompConnection.class);
@@ -115,7 +113,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
      * Send an announce message to the backend server
      * to notify it about the existence of this race-track.
      *
-     * Note: The backend expects announce-messages from a racetrack in an interval < 1 second,
+     * Note: The backend expects announce-messages from a racetrack in an interval below 1 second,
      * thus this method should be called repeatedly on a distinct timer thread.
      *
      * @param optionalUrl
