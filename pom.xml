@@ -5,7 +5,7 @@
 
     <groupId>com.zuehlke.carrera</groupId>
     <artifactId>carrera.clientapi</artifactId>
-    <version>1.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:https://github.com/FastAndFurious/client-commons-api.git</connection>
