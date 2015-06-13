@@ -1,0 +1,18 @@
+machine:
+  java:
+    version: oraclejdk8
+
+dependencies:
+  override:
+    - mvn compile -am
+
+test:
+  override:
+    - mvn -Prelease clean install
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - mvn release:prepare
+      - mvn release:perform
