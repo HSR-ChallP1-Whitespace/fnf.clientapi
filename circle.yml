@@ -3,6 +3,8 @@ machine:
     version: oraclejdk8
 
 dependencies:
+  pre:
+    - mvn install --settings conf/settings.xml
   override:
     - mvn compile -am
 
