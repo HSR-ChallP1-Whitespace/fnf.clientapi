@@ -1,0 +1,6 @@
+<server>
+  <id>bintray</id>
+  <username>${env.bintray_user}</username>
+  <password>${env.bintray_api_key}</password>
+</server>
+
