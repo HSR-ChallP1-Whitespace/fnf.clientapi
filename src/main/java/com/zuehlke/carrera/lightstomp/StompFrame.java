@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a STOMP Frame as described in
- * @link {http://stomp.github.io/stomp-specification-1.1.html#STOMP_Frames}
- *
+ * Represents a STOMP Frame
  */
 public class StompFrame {
 

@@ -21,20 +21,11 @@ public class StompClient {
 
     /**
      * Builds a Stomp Client which uses STOMP over Websocket
-     * @param uri
-     * @return
-     * @throws URISyntaxException
      */
     public static StompClient connectOverWebSocket(String uri, ISTOMPListener listener) {
         return connectOverWebSocket(uri, null, null, listener);
     }
 
-    /**
-     * Builds a Stomp Client which uses STOMP over Websocket
-     * @param uri
-     * @return
-     * @throws URISyntaxException
-     */
     public static StompClient connectOverWebSocket(String uri, String user, String password, ISTOMPListener listener) {
         StompWebSocket socket;
         try {
