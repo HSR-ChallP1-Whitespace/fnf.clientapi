@@ -65,6 +65,7 @@ public abstract class RelayConnection {
 
     /**
      * Try to connect to the backend using a STOMP client
+     * @param subscribers the list of subscribers for incoming messages
      */
     protected synchronized void connect( List<ChannelSubscriber> subscribers ){
         connecting = true;

@@ -2,31 +2,26 @@ package com.zuehlke.carrera.lightstomp.stompSocket;
 
 import com.zuehlke.carrera.lightstomp.StompFrame;
 
-/**
- * Created by paba on 11/21/14.
- */
 public interface IStompSocket {
 
     /**
-     * Returns true if this socket is connected
-     * @return
+     * @return true if this socket is connected
      */
     boolean isConnected();
 
     /**
-     *
+     * @param listener the listener to listen on the connection
      */
     void connect(ISocketListener listener);
 
     /**
      * Send the given Frame
-     * @param request
+     * @param request the request frame
      */
     void sendFrame(StompFrame request);
 
     /**
-     * Get the host to which this socket is connected
-     * @return
+     * @return the host to which this socket is connected
      */
     String getHost();
 

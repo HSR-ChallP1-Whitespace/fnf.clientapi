@@ -31,9 +31,9 @@ public class StompFrame {
 
     /**
      * Add the header value to this frame
-     * @param key
-     * @param value
-     * @return
+     * @param key the header key
+     * @param value the value of the param
+     * @return a stomp frame
      */
     public StompFrame withHeader(String key, String value) {
         headers.put(key, value);
@@ -42,8 +42,8 @@ public class StompFrame {
 
     /**
      * Set the body for this frame. (Overwrites an existing body)
-     * @param message
-     * @return
+     * @param message the body
+     * @return the stomp frame
      */
     public StompFrame withBody(String message) {
         this.body = message;
@@ -56,8 +56,8 @@ public class StompFrame {
 
     /**
      * Returns the value of the requested header, or null if not present
-     * @param key
-     * @return
+     * @param key the key of the header value
+     * @return the header value
      */
     public String getHeaderValue(String key) {
         return headers.get(key);
@@ -66,8 +66,8 @@ public class StompFrame {
     private final Charset encoding = Charset.forName("UTF-8");
 
     /**
-     * Returns the framw as byte array ready to be sent
-     * @return
+     * Returns the frame as byte array ready to be sent
+     * @return a byte buffer representation of this frame
      */
     public ByteBuffer toByteBuffer(){
         ByteArrayOutputStream sbuf = new ByteArrayOutputStream(250);

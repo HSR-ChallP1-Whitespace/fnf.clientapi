@@ -11,20 +11,15 @@ import java.util.Map;
  */
 class SubscriptionRouter {
 
-    private final Map<String, MessageListener> uuidToListenerMap = new HashMap<>();
     private final Map<String, List<MessageListener>> channelToListenerMap = new HashMap<>();
 
 
     /**
      * Register a route
      * @param channel The channel
-     * @param subscriptionId THe UNIQUE ID for this listener
-     * @param listener
+     * @param listener the listener
      */
-    public synchronized void register(String channel, String subscriptionId, MessageListener listener){
-
-        // Unique id map
-        uuidToListenerMap.put(subscriptionId, listener);
+    public synchronized void register(String channel, MessageListener listener){
 
         // Channel map
         List<MessageListener> listeners = channelToListenerMap.get(channel);
@@ -38,8 +33,8 @@ class SubscriptionRouter {
     /**
      * Routes the given message to the given channel and notify all
      * listeners of this channel.
-     * @param channel
-     * @param message
+     * @param channel the id of the simulator or pilot to route to
+     * @param message the message to be routed
      */
     public synchronized void routeMessage(String channel, String message){
         List<MessageListener> listeners = channelToListenerMap.get(channel);

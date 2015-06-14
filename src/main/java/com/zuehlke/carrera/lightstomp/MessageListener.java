@@ -6,7 +6,7 @@ package com.zuehlke.carrera.lightstomp;
 public interface MessageListener {
     /**
      * Occurs when a STOMP message is received by the client.
-     * @param message
+     * @param message the message
      */
     void messageReceived(String message);
 }

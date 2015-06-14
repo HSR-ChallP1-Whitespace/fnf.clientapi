@@ -13,13 +13,12 @@ import java.util.Arrays;
 public class SensorEvent implements Serializable {
 
     /**
-     * Returns a empty sensor data
+     * create a empty sensor data
      */
     public static final SensorEvent Empty = createEmptyCarSensor();
 
     /**
-     * Creates a new, empty Car-Sensor Event
-     * @return
+     * @return a new, empty Car-Sensor Event
      */
     public static SensorEvent createEmptyCarSensor(){
         return new SensorEvent(null, new int[3], new int[3], new int[3], 0);
@@ -61,10 +60,10 @@ public class SensorEvent implements Serializable {
     /**
      * Creates a Sensor-Event of Car-Sensor Data
      * @param raceTrackId The id of the race-track from which this event originates.
-     * @param acc
-     * @param gyr
-     * @param mag
-     * @param timeStamp
+     * @param acc acceleration vector
+     * @param gyr gyrometer vector
+     * @param mag magnetic field vector
+     * @param timeStamp time stamp
      */
     public SensorEvent(String raceTrackId, int[] acc, int[] gyr, int[] mag, long timeStamp){
         this.raceTrackId = raceTrackId;
@@ -76,44 +75,44 @@ public class SensorEvent implements Serializable {
 
 
     /**
-     * Gets the X, Y, Z Acceleration
-     * @return
+     * @return the X, Y, Z Acceleration
      */
     public int[] getA(){
         return a;
     }
 
     /**
-     * Gets the X, Y, Z Gyro Data
-     * @return
+     * @return the X, Y, Z Gyro Data
      */
     public int[] getG(){
         return g;
     }
 
     /**
-     * Gets the X, Y, Z Magnitude
-     * @return
+     *  @return the X, Y, Z Magnitude
      */
     public int[] getM(){
         return m;
     }
 
     /**
-     * Get the time-stamp when this event happened
-     * @return
+     *  @return the time-stamp when this event happened
      */
     @Transient
     public long getTimeStamp() {
         return timeStamp;
     }
 
+    /**
+     * @return the timestamp relative to the start of the series
+     */
     public int getT() {
         return t;
     }
 
     /** calculate the distance between the start time and the timestamp
      *  saves a lot of disk space!
+     *  @param offSet the offset to be be used to calculate the relative timestamp
      */
     public void offSetTime ( long offSet ) {
         t = (int)(timeStamp - offSet);
@@ -130,6 +129,9 @@ public class SensorEvent implements Serializable {
                 '}';
     }
 
+    /**
+     * @return the id of the track
+     */
     public String getRaceTrackId() {
         return raceTrackId;
     }
@@ -137,8 +139,8 @@ public class SensorEvent implements Serializable {
 
     /**
      * Returns a copy of this object with the raceTrackId set to the given value
-     * @param raceTrackId
-     * @return
+     * @param raceTrackId race track id
+     * @return the given event, now on the given race track
      */
     public SensorEvent withRaceTrackId(String raceTrackId) {
         SensorEvent copy = new SensorEvent(this);
@@ -148,8 +150,8 @@ public class SensorEvent implements Serializable {
 
 
     /**
-     * Copies all values from the prototype to this instance
-     * @param prototype
+     * Copies all values from the given prototype to this instance
+     * @param prototype a prototype event to use
      */
     protected void prototype(SensorEvent prototype){
 

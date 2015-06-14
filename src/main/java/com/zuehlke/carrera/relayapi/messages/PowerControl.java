@@ -26,7 +26,11 @@ public class PowerControl implements Serializable {
 
 
     /**
-     * Creates a new SpeedControl with the given power
+     *
+     * @param p the power value
+     * @param teamId the team id
+     * @param accessCode the team's access code
+     * @param timestamp the current timestamp
      */
     public PowerControl(int p, String teamId, String accessCode, long timestamp) {
 
@@ -46,18 +50,30 @@ public class PowerControl implements Serializable {
         this.timeStamp = timeStamp;
     }
 
+    /**
+     * @return the power value
+     */
     public int getP() {
         return p;
     }
 
+    /**
+     * @return the unique team identfier
+     */
     public String getTeamId() {
         return teamId;
     }
 
+    /**
+     * @return the access code
+     */
     public String getAccessCode() {
         return accessCode;
     }
 
+    /**
+     * @return the timestamp relative to the start of the series
+     */
     public int getT() {
         return t;
     }
@@ -66,6 +82,9 @@ public class PowerControl implements Serializable {
         return getP() + "";
     }
 
+    /**
+     * @return the original timestamp
+     */
     @Transient
     public long getTimeStamp() {
         return timeStamp;

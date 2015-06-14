@@ -45,9 +45,12 @@ public class RaceTrackToRelayConnection extends RelayConnection {
      *
      * @param relayUrl The WebSocket url (ws://) to the relay server
      * @param racetrackId The unique name of this race-track
+     * @param type the type of the racetrack: simulator or real
      * @param user The user name for the backend server (may be null)
      * @param password The password name for the backend server (may be null)
      * @param onSpeedControl A call-back when a SpeedControl from the backend arrives.
+     * @param onRaceStart call back for race start messages
+     * @param onRaceStop call back for race stop messsages
      */
     public RaceTrackToRelayConnection(String relayUrl, String racetrackId, RaceTrackType type, String user, String password,
                                       Consumer<PowerControl> onSpeedControl,
@@ -74,7 +77,7 @@ public class RaceTrackToRelayConnection extends RelayConnection {
      * Note: The backend expects announce-messages from a racetrack in an interval below 1 second,
      * thus this method should be called repeatedly on a distinct timer thread.
      *
-     * @param optionalUrl
+     * @param optionalUrl an optional url where to reach the client
      */
     public void announce(String optionalUrl) {
 
@@ -92,8 +95,8 @@ public class RaceTrackToRelayConnection extends RelayConnection {
 
     /**
      * Send the given SensorEvent to the backend.
-     * @param sensorEvent
-     * @return
+     * @param sensorEvent the event
+     * @return true if successful
      */
     public boolean send(SensorEvent sensorEvent) {
         if(sensorEvent == null) throw new IllegalArgumentException("sensorEvent must not be NULL!");

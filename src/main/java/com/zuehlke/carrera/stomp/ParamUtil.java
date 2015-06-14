@@ -7,9 +7,9 @@ public class ParamUtil {
      * and replaces variables with the given params.
      *
      *
-     * @param templateUrl
-     * @param params
-     * @return
+     * @param templateUrl the url template
+     * @param params the params to be used
+     * @return the resulting string
      */
     public static String paramUrl(String templateUrl, String... params){
         final String paramPattern = "\\{\\w*\\}";

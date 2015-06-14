@@ -21,6 +21,7 @@ public class RaceTrack {
     /**
      * Creates a new RaceTrack
      * @param type The type of the track.
+     * @param idName the name of the track
      */
     public RaceTrack(RaceTrackType type, String idName ){
         this.type = type;

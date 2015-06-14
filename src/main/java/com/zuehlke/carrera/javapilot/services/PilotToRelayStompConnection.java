@@ -116,7 +116,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
      * Note: The backend expects announce-messages from a racetrack in an interval below 1 second,
      * thus this method should be called repeatedly on a distinct timer thread.
      *
-     * @param optionalUrl
+     * @param optionalUrl the optional url
      */
     @Override
     public void announce(String optionalUrl) {

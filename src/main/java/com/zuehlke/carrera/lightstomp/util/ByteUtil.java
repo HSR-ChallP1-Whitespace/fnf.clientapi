@@ -1,15 +1,15 @@
 package com.zuehlke.carrera.lightstomp.util;
 
 /**
- * Created by IsNull on 23.11.14.
+ *  Utility class for Hex representations
  */
 public class ByteUtil {
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     /**
      * Turns a byte array into a hex-string representation
-     * @param bytes
-     * @return
+     * @param bytes the byte array
+     * @return a string with hex representation of the byte array
      */
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
@@ -23,8 +23,8 @@ public class ByteUtil {
 
     /**
      * Turns a byte array into a hex-string representation, each byte is separated by a space
-     * @param bytes
-     * @return
+     * @param bytes the byte array
+     * @return a string with hex representation of the byte array separated by spaces
      */
     public static String bytesToHexSpaced(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 3];

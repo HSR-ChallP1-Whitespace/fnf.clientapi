@@ -21,6 +21,9 @@ public class StompClient {
 
     /**
      * Builds a Stomp Client which uses STOMP over Websocket
+     * @param uri the target uri
+     * @param listener a listener for the connection
+     * @return the stomp client
      */
     public static StompClient connectOverWebSocket(String uri, ISTOMPListener listener) {
         return connectOverWebSocket(uri, null, null, listener);
@@ -89,8 +92,7 @@ public class StompClient {
     }
 
     /**
-     * Returns true if the STOMP protocol has had a successful handshake
-     * @return
+     * @return true if the STOMP protocol has had a successful handshake
      */
     public boolean isConnected() {
         return isConnected;
@@ -98,8 +100,8 @@ public class StompClient {
 
     /**
      * Send the given text message to the given channel
-     * @param channel
-     * @param message
+     * @param channel the channel
+     * @param message the message
      */
     public void stompSend(String channel, String message){
         StompFrame request = new StompFrame(
@@ -111,8 +113,8 @@ public class StompClient {
     /**
      * Subscribe to the given channel.
      * For all subsequent messages sent to the specified channel, the given message listener will be invoked.
-     * @param channel
-     * @param listener
+     * @param channel the channel
+     * @param listener the listener
      */
     public void subscribe(String channel, MessageListener listener){
 
@@ -127,14 +129,14 @@ public class StompClient {
                 ;
         sendStompFrame(subscriptionRequest);
 
-        subscriptionRouter.register(channel, subscriptionId, listener);
+        subscriptionRouter.register(channel, listener);
     }
 
 
     /**
      * Connect to the Websocket using a HTTP header with credentials.
-     * @param user
-     * @param password
+     * @param user username
+     * @param password credentials
      */
     private void stompConnect(String user, String password) {
         StompFrame request = new StompFrame(FrameType.CONNECT)
@@ -157,14 +159,14 @@ public class StompClient {
 
     /**
      * Occurs when we receive a stomp from the server
-     * @param frame
+     * @param frame the incoming frame
      */
     private void stompFrameReceived(StompFrame frame){
 
         switch (frame.getType()){
 
             case CONNECTED:
-                handleServerConnected(frame);
+                handleServerConnected();
                 break;
 
             case ERROR:
@@ -172,7 +174,7 @@ public class StompClient {
                 break;
 
             case RECEIPT:
-                handleServerReceipt(frame);
+                LOG.error("Receipt handling not supported in this version!");
                 break;
 
             case MESSAGE:
@@ -193,16 +195,12 @@ public class StompClient {
         }
     }
 
-    private void handleServerReceipt(StompFrame frame) {
-        LOG.error("Receipt handling not supported in this version!");
-    }
-
     private void handleServerError(StompFrame frame) {
         LOG.debug("Received Error - connection will die now!"  + System.lineSeparator() + frame);
         handleServerDisconnected("STOMP ERROR FRAME: " + frame.getBody());
     }
 
-    private void handleServerConnected(StompFrame frame) {
+    private void handleServerConnected() {
         isConnected = true;
         fireAll(l -> l.connectionSuccess(this));
     }

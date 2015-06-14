@@ -22,16 +22,14 @@ public class PingData {
     }
 
     /**
-     * The id of the ping target, i.e. the stomp client id.
-     * @return
+     * @return the stomp client id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * The id of this ping message.
-     * @return
+     * @return the id of the message
      */
     public int getMessageId() {
         return messageId;
