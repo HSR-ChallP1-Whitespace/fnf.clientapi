@@ -9,7 +9,6 @@
 
     <scm>
         <connection>scm:git:https://github.com/FastAndFurious/client-commons-api.git</connection>
-        <developerConnection>scm:git:git@github.com:FastAndFurious/client-commons-api.git</developerConnection>
         <url>https://github.com/FastAndFurious/client-commons-api.git</url>
       <tag>v1.1.3</tag>
     </scm>
