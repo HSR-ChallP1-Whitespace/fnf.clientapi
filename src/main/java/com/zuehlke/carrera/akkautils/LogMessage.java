@@ -1,4 +1,4 @@
-package akkautils;
+package com.zuehlke.carrera.akkautils;
 
 import akka.actor.UntypedActor;
 
