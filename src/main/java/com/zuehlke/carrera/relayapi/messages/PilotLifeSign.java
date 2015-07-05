@@ -8,10 +8,12 @@ public class PilotLifeSign {
     private String teamId;
     private String accessCode;
     private String optionalUrl;
+    private long timestamp;
 
     public PilotLifeSign() {} // for serialization purposes
 
-    public PilotLifeSign(String teamId, String accessCode, String optionalUrl) {
+    public PilotLifeSign(String teamId, String accessCode, String optionalUrl, long timestamp) {
+        this.timestamp = timestamp;
         this.teamId = teamId;
         this.accessCode = accessCode;
         this.optionalUrl = optionalUrl;
@@ -39,5 +41,13 @@ public class PilotLifeSign {
 
     public void setOptionalUrl(String optionalUrl) {
         this.optionalUrl = optionalUrl;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
