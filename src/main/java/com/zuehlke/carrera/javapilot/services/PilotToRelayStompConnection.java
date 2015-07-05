@@ -122,7 +122,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
     public void announce(String optionalUrl) {
 
         if(client != null && client.isConnected()) {
-            Object announceMessage = null;
+            Object announceMessage = new PilotLifeSign(clientId, super.password, optionalUrl);
             try {
                 client.stompSend(CHANNEL_ANNOUNCE, mapper.writeValueAsString(announceMessage));
             } catch (JsonProcessingException e) {
