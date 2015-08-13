@@ -1,6 +1,5 @@
 package com.zuehlke.carrera.api;
 
-import com.zuehlke.carrera.api.channel.ChannelNames;
 import com.zuehlke.carrera.api.client.Client;
 import com.zuehlke.carrera.api.seralize.Serializer;
 import org.slf4j.Logger;
