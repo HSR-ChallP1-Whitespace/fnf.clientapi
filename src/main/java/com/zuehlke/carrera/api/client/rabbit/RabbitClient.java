@@ -15,6 +15,11 @@ public class RabbitClient implements Client {
     private Connection connection;
 
     @Override
+    public boolean isConnected() {
+        return connected;
+    }
+
+    @Override
     public void connect(String url) {
         if(connected) {
             return;

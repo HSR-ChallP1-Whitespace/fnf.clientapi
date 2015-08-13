@@ -2,6 +2,8 @@ package com.zuehlke.carrera.api.client;
 
 public interface Client {
 
+    boolean isConnected();
+
     void connect(String url);
 
     void disconnect();

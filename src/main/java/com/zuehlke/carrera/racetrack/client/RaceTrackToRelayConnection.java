@@ -17,28 +17,23 @@ import java.util.function.Consumer;
  * and provides an easy to use wrapper API to interact with
  * the relay server.
  *
- *
  */
 public class RaceTrackToRelayConnection extends RelayConnection {
-
     private static final Logger LOG = LoggerFactory.getLogger(RaceTrackToRelayConnection.class);
-
     // outbound channels
     private static final String CHANNEL_ANNOUNCE = "/app/racetracks/announce";
     private static final String CHANNEL_SENSOR_EVENTS = "/app/racetracks/events";
     private static final String CHANNEL_VELOCITY = "/app/racetracks/velocity";
     private static final String CHANNEL_PENALTY = "/app/racetracks/penalty";
     private static final String CHANNEL_ROUND_PASSED = "/app/racetracks/roundPassed";
-
     // inbound channels
     private static final String CHANNEL_SPEED_TEMPLATE = "/topic/racetracks/{id}/speed";
     private static final String CHANNEL_START_TEMPLATE = "/topic/racetracks/{id}/start";
     private static final String CHANNEL_STOP_TEMPLATE = "/topic/racetracks/{id}/stop";
-
-    private final Consumer<PowerControl> onSpeedControl;
-    private final Consumer<RaceStartMessage> onRaceStart;
-    private final Consumer<RaceStopMessage> onRaceStop;
     private final RaceTrackType raceTrackType;
+    private Consumer<PowerControl> onSpeedControl;
+    private Consumer<RaceStartMessage> onRaceStart;
+    private Consumer<RaceStopMessage> onRaceStop;
 
     /**
      * Creates a new RelayClientConnection over web-socket.
@@ -48,25 +43,26 @@ public class RaceTrackToRelayConnection extends RelayConnection {
      * @param type the type of the racetrack: simulator or real
      * @param user The user name for the backend server (may be null)
      * @param password The password name for the backend server (may be null)
-     * @param onSpeedControl A call-back when a SpeedControl from the backend arrives.
-     * @param onRaceStart call back for race start messages
-     * @param onRaceStop call back for race stop messsages
      */
-    public RaceTrackToRelayConnection(String relayUrl, String racetrackId, RaceTrackType type, String user, String password,
-                                      Consumer<PowerControl> onSpeedControl,
-                                      Consumer<RaceStartMessage> onRaceStart,
-                                      Consumer<RaceStopMessage> onRaceStop){
-
+    public RaceTrackToRelayConnection(String relayUrl,
+                                      String racetrackId,
+                                      RaceTrackType type,
+                                      String user,
+                                      String password){
         super(relayUrl, racetrackId, user, password);
         this.raceTrackType = type;
-
         if(racetrackId == null) throw new IllegalArgumentException("raceTrackId must not be NULL!");
-        if(onSpeedControl == null) throw new IllegalArgumentException("onSpeedControl must not be NULL!");
-        if(onRaceStart == null) throw new IllegalArgumentException("onRaceStart must not be NULL!");
-        if(onRaceStop == null) throw new IllegalArgumentException("onRaceStop must not be NULL!");
+    }
 
+    public void onSpeedControl(Consumer<PowerControl> onSpeedControl) {
         this.onSpeedControl = onSpeedControl;
+    }
+
+    public void onRaceStart(Consumer<RaceStartMessage> onRaceStart) {
         this.onRaceStart = onRaceStart;
+    }
+
+    public void onRaceStop(Consumer<RaceStopMessage> onRaceStop) {
         this.onRaceStop = onRaceStop;
     }
 
@@ -80,7 +76,6 @@ public class RaceTrackToRelayConnection extends RelayConnection {
      * @param optionalUrl an optional url where to reach the client
      */
     public void announce(String optionalUrl) {
-
         if(client != null && client.isConnected()) {
             RaceTrack announceMessage = new RaceTrack(raceTrackType, clientId);
             //RaceTrack announceMessage = new RaceTrack(clientId, RaceTrackType.SIMULATOR);
@@ -118,44 +113,26 @@ public class RaceTrackToRelayConnection extends RelayConnection {
         return sendObject(CHANNEL_ROUND_PASSED, roundPassedMessage);
     }
 
-
-
-    /**
-     * Try to connect to the backend using a STOMP client
-     */
     protected synchronized void connect(){
         connecting = true;
         client = null;
         try {
             LOG.info("Trying to connect to " + relayUrl + " as user " + user + " ...");
-
             StompClient.connectOverWebSocket(relayUrl, user, password, new ISTOMPListener() {
 
                 @Override
                 public void connectionSuccess(StompClient stompClient) {
-
                     LOG.info("STOMP Connected to relay server!");
                     client = stompClient;
-
                     String speedChannel = ParamUtil.paramUrl(CHANNEL_SPEED_TEMPLATE, clientId);
-
                     LOG.info("Subscribing to channel '" + speedChannel + "'");
                     client.subscribe(speedChannel, RaceTrackToRelayConnection.this::onSpeedMessage);
-
-                    /*
-                    String pingChannel = ParamUtil.paramUrl(CHANNEL_PING_TEMPLATE, racetrackId);
-                    LOG.info("Subscribing to channel '" + pingChannel + "'");
-                    client.subscribe(pingChannel, RelayConnection.this::onPingMessage);
-                    */
-
                     String startChannel = ParamUtil.paramUrl(CHANNEL_START_TEMPLATE, clientId);
                     LOG.info("Subscribing to channel '" + startChannel + "'");
                     client.subscribe(startChannel, RaceTrackToRelayConnection.this::onStartMessage);
-
                     String stopChannel = ParamUtil.paramUrl(CHANNEL_STOP_TEMPLATE, clientId);
                     LOG.info("Subscribing to channel '" + stopChannel + "'");
                     client.subscribe(stopChannel, RaceTrackToRelayConnection.this::onStopMessage);
-
                     connecting = false;
                 }
 
@@ -174,7 +151,7 @@ public class RaceTrackToRelayConnection extends RelayConnection {
                 }
             });
 
-        }catch (Throwable e){
+        } catch(Throwable e){
             LOG.error("Can not connect to relay!", e);
             client = null;
             connecting = false;

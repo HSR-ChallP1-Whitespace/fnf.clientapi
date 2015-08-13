@@ -32,8 +32,12 @@ class ApiConnection {
     }
 
     public void publishTo(String channelName, Object message) {
-        LOG.info("Publishing to " + channelName);
-        client.publish(channelName, serializer.serialize(message));
+        if(client.isConnected()) {
+            LOG.info("Publishing to " + channelName);
+            client.publish(channelName, serializer.serialize(message));
+            return;
+        }
+        LOG.info("Publishing to " + channelName + " skipped, not connected yet");
     }
 
     public <T> void subscribeTo(String channelName, Consumer<T> onMessage, Class<T> messageType) {
