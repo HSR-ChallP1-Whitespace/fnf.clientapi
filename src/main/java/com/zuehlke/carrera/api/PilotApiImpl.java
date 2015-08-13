@@ -1,8 +1,8 @@
-package com.zuehlke.carrera.clientapi;
+package com.zuehlke.carrera.api;
 
-import com.zuehlke.carrera.clientapi.channel.ChannelNames;
-import com.zuehlke.carrera.clientapi.client.Client;
-import com.zuehlke.carrera.clientapi.seralize.Serializer;
+import com.zuehlke.carrera.api.channel.ChannelNames;
+import com.zuehlke.carrera.api.client.Client;
+import com.zuehlke.carrera.api.seralize.Serializer;
 import com.zuehlke.carrera.relayapi.messages.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

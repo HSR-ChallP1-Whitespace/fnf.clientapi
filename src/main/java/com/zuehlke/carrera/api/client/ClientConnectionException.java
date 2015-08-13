@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.client;
+package com.zuehlke.carrera.api.client;
 
 public class ClientConnectionException extends RuntimeException {
 

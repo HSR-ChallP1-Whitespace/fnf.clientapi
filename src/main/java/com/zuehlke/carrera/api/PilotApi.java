@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi;
+package com.zuehlke.carrera.api;
 
 import com.zuehlke.carrera.relayapi.messages.*;
 

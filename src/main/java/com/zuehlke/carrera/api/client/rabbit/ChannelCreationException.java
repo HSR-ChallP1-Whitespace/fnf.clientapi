@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.client.rabbit;
+package com.zuehlke.carrera.api.client.rabbit;
 
 public class ChannelCreationException extends RuntimeException {
 

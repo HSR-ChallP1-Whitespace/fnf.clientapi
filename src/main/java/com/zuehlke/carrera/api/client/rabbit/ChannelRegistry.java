@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.client.rabbit;
+package com.zuehlke.carrera.api.client.rabbit;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

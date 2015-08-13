@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.seralize;
+package com.zuehlke.carrera.api.seralize;
 
 public interface Serializer {
 

@@ -1,7 +1,7 @@
-package com.zuehlke.carrera.clientapi;
+package com.zuehlke.carrera.api;
 
-import com.zuehlke.carrera.clientapi.client.Client;
-import com.zuehlke.carrera.clientapi.client.MessageReceiver;
+import com.zuehlke.carrera.api.client.Client;
+import com.zuehlke.carrera.api.client.MessageReceiver;
 
 class Subscription {
     private final String channelName;

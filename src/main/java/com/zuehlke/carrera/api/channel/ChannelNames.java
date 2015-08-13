@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.channel;
+package com.zuehlke.carrera.api.channel;
 
 public interface ChannelNames {
 

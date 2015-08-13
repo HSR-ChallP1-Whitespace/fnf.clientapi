@@ -1,4 +1,4 @@
-package com.zuehlke.carrera.clientapi.seralize;
+package com.zuehlke.carrera.api.seralize;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

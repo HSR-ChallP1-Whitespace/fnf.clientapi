@@ -1,7 +1,7 @@
-package com.zuehlke.carrera.clientapi.client.rabbit;
+package com.zuehlke.carrera.api.client.rabbit;
 
 import com.rabbitmq.client.*;
-import com.zuehlke.carrera.clientapi.client.*;
+import com.zuehlke.carrera.api.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
