@@ -4,15 +4,11 @@ import com.zuehlke.carrera.relayapi.messages.*;
 
 import java.util.function.Consumer;
 
-public interface PilotApi {
+public interface PilotApi extends Api {
 
-    void connect(String url);
+    void announce(PilotLifeSign message);
 
-    void disconnect();
-
-    void announce(PilotLifeSign pilot);
-
-    void powerControl(PowerControl powerControl);
+    void powerControl(PowerControl message);
 
     void onRaceStart(Consumer<RaceStartMessage> onRaceStart);
 

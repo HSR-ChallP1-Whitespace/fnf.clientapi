@@ -4,91 +4,65 @@ import com.zuehlke.carrera.api.channel.ChannelNames;
 import com.zuehlke.carrera.api.client.Client;
 import com.zuehlke.carrera.api.seralize.Serializer;
 import com.zuehlke.carrera.relayapi.messages.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class PilotApiImpl implements PilotApi {
-    private static final Logger LOG = LoggerFactory.getLogger(PilotApiImpl.class);
-    private final List<Subscription> subscriptions = new ArrayList<>();
-    private final Client client;
     private final ChannelNames names;
-    private final Serializer serializer;
+    private final ApiConnection connection;
 
     public PilotApiImpl(Client client, ChannelNames names, Serializer serializer) {
         this.names = names;
-        this.client = client;
-        this.serializer = serializer;
+        this.connection = new ApiConnection(client, serializer);
     }
 
     @Override
-    public void connect(String url) {
-        client.connect(url);
-        for(Subscription subscription : subscriptions) {
-            subscription.subscribe(client);
-        }
+    public void announce(PilotLifeSign message) {
+        connection.publishTo(names.announce(), message);
     }
 
     @Override
-    public void disconnect() {
-        client.disconnect();
-    }
-
-    @Override
-    public void announce(PilotLifeSign pilotLifeSign) {
-        LOG.info("Publishing to " + names.announce());
-        client.publish(names.announce(), serializer.serialize(pilotLifeSign));
-    }
-
-    @Override
-    public void powerControl(PowerControl powerControl) {
-        LOG.info("Publishing to " + names.powerControl());
-        client.publish(names.powerControl(), serializer.serialize(powerControl));
+    public void powerControl(PowerControl message) {
+        connection.publishTo(names.powerControl(), message);
     }
 
     @Override
     public void onRaceStart(Consumer<RaceStartMessage> onRaceStart) {
-        LOG.info("Subscribing to " + names.raceStart());
-        subscriptions.add(subscriptionFor(names.raceStart(), onRaceStart, RaceStartMessage.class));
+        connection.subscribeTo(names.raceStart(), onRaceStart, RaceStartMessage.class);
     }
 
     @Override
     public void onRaceStop(Consumer<RaceStopMessage> onRaceStop) {
-        LOG.info("Subscribing to " + names.raceStop());
-        subscriptions.add(subscriptionFor(names.raceStop(), onRaceStop, RaceStopMessage.class));
+        connection.subscribeTo(names.raceStop(), onRaceStop, RaceStopMessage.class);
     }
 
     @Override
     public void onVelocity(Consumer<VelocityMessage> onVelocity) {
-        LOG.info("Subscribing to " + names.velocity());
-        subscriptions.add(subscriptionFor(names.velocity(), onVelocity, VelocityMessage.class));
+        connection.subscribeTo(names.velocity(), onVelocity, VelocityMessage.class);
     }
 
     @Override
     public void onPenalty(Consumer<PenaltyMessage> onPenalty) {
-        LOG.info("Subscribing to " + names.penalty());
-        subscriptions.add(subscriptionFor(names.penalty(), onPenalty, PenaltyMessage.class));
+        connection.subscribeTo(names.penalty(), onPenalty, PenaltyMessage.class);
     }
 
     @Override
     public void onSensor(Consumer<SensorEvent> onSensor) {
-        LOG.info("Subscribing to " + names.sensor());
-        subscriptions.add(subscriptionFor(names.sensor(), onSensor, SensorEvent.class));
+        connection.subscribeTo(names.sensor(), onSensor, SensorEvent.class);
     }
 
     @Override
     public void onRoundPassed(Consumer<RoundPassedMessage> onRoundPassed) {
-        LOG.info("Subscribing to " + names.roundPassed());
-        subscriptions.add(subscriptionFor(names.roundPassed(), onRoundPassed, RoundPassedMessage.class));
+        connection.subscribeTo(names.roundPassed(), onRoundPassed, RoundPassedMessage.class);
     }
 
-    private <T> Subscription subscriptionFor(String channel, Consumer<T> consumer, Class<T> messageType) {
-        return new Subscription(channel, message -> {
-            LOG.info("Receiving message in channel " + channel);
-            consumer.accept(serializer.deserialize(message, messageType));
-        });
+    @Override
+    public void connect(String url) {
+        connection.connect(url);
+    }
+
+    @Override
+    public void disconnect() {
+        connection.disconnect();
     }
 }
