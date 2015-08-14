@@ -1,6 +1,6 @@
 package com.zuehlke.carrera.api;
 
-import com.zuehlke.carrera.api.channel.ChannelNames;
+import com.zuehlke.carrera.api.channel.RaceChannelNames;
 import com.zuehlke.carrera.api.client.Client;
 import com.zuehlke.carrera.api.seralize.Serializer;
 import com.zuehlke.carrera.relayapi.messages.*;
@@ -9,9 +9,9 @@ import java.util.function.Consumer;
 
 public class SimulatorApiImpl implements SimulatorApi {
     private final ApiConnection connection;
-    private final ChannelNames names;
+    private final RaceChannelNames names;
 
-    public SimulatorApiImpl(ChannelNames names, Client client, Serializer serializer) {
+    public SimulatorApiImpl(RaceChannelNames names, Client client, Serializer serializer) {
         this.names = names;
         this.connection = new ApiConnection(client, serializer);
     }

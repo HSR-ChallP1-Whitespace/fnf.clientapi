@@ -1,6 +1,6 @@
 package com.zuehlke.carrera.api.channel;
 
-public interface ChannelNames {
+public interface RaceChannelNames {
 
     String raceStart();
 

@@ -2,7 +2,7 @@ package com.zuehlke.carrera.api.channel;
 
 import com.zuehlke.carrera.stomp.ParamUtil;
 
-public class PilotToRelayChannelNames implements ChannelNames {
+public class PilotToRelayChannelNames implements RaceChannelNames {
     private static final String START_TEMPLATE = "/topic/pilots/{id}/start";
     private static final String STOP_TEMPLATE = "/topic/pilots/{id}/stop";
     private static final String SENSOR_TEMPLATE = "/topic/pilots/{id}/sensor";
