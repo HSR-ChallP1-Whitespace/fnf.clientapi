@@ -14,16 +14,17 @@ public class RaceTrack {
     /**
      * Empty constructor for serialisation
      */
-    protected RaceTrack(){
+    protected RaceTrack() {
 
     }
 
     /**
      * Creates a new RaceTrack
-     * @param type The type of the track.
+     *
+     * @param type   The type of the track.
      * @param idName the name of the track
      */
-    public RaceTrack(RaceTrackType type, String idName ){
+    public RaceTrack(RaceTrackType type, String idName) {
         this.type = type;
         this.idName = idName;
     }
@@ -61,7 +62,6 @@ public class RaceTrack {
     }
 
 
-
     @Override
     public String toString() {
         return "RaceTrack{" +
@@ -71,7 +71,6 @@ public class RaceTrack {
 
 
     /**
-     *
      * @param o the other object
      * @return true if both race tracks have the same id, for it's supposed to be unique
      */

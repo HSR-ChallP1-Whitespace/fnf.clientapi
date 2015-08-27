@@ -27,10 +27,10 @@ public class LoggerActor extends UntypedActor {
     @Override
     public void onReceive(Object message) throws Exception {
 
-        if ( message instanceof LogMessage ) {
+        if (message instanceof LogMessage) {
             LogMessage logMessage = (LogMessage) message;
             Logger logger = LoggerFactory.getLogger(logMessage.getSource());
-            logger.info ( ((LogMessage)message).getMessage());
+            logger.info(((LogMessage) message).getMessage());
         } else {
             myLogger.info(message.toString());
         }

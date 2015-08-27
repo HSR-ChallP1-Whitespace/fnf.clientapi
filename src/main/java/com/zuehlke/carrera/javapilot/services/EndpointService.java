@@ -10,7 +10,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- *      Determines the url of this application
+ * Determines the url of this application
  */
 @Service
 public class EndpointService implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
@@ -21,22 +21,22 @@ public class EndpointService implements ApplicationListener<EmbeddedServletConta
     private int port;
     private String httpEndpoint = null;
 
-    public EndpointService(){
+    public EndpointService() {
         setAddress();
     }
 
     @Override
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent embeddedServletContainerInitializedEvent) {
         port = embeddedServletContainerInitializedEvent.getEmbeddedServletContainer().getPort();
-        httpEndpoint = "http://"+ address + ":" + port;
+        httpEndpoint = "http://" + address + ":" + port;
         LOG.info("Server is running on port " + port);
     }
 
-    public String getHttpEndpoint(){
+    public String getHttpEndpoint() {
         return httpEndpoint;
     }
 
-    private void setAddress(){
+    private void setAddress() {
         try {
             address = InetAddress.getLocalHost().getCanonicalHostName();
         } catch (UnknownHostException e) {

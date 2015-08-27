@@ -14,7 +14,8 @@ public class RaceStartMessage extends StandardMessage {
     private boolean recordData;
 
     // for serialization purposes
-    public RaceStartMessage() {}
+    public RaceStartMessage() {
+    }
 
     public RaceStartMessage(String trackId, RaceType type, String teamId, long timestamp,
                             String description, boolean recordData) {
@@ -42,12 +43,12 @@ public class RaceStartMessage extends StandardMessage {
         this.type = type;
     }
 
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
-    }
-
     public String getTeamId() {
         return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
     public String getDescription() {

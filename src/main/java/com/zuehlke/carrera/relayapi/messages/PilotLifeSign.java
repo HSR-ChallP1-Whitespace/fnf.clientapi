@@ -1,7 +1,7 @@
 package com.zuehlke.carrera.relayapi.messages;
 
 /**
- *  represents a life sign from a pilot to the relay station
+ * represents a life sign from a pilot to the relay station
  */
 public class PilotLifeSign {
 
@@ -10,7 +10,8 @@ public class PilotLifeSign {
     private String optionalUrl;
     private long timestamp;
 
-    public PilotLifeSign() {} // for serialization purposes
+    public PilotLifeSign() {
+    } // for serialization purposes
 
     public PilotLifeSign(String teamId, String accessCode, String optionalUrl, long timestamp) {
         this.timestamp = timestamp;

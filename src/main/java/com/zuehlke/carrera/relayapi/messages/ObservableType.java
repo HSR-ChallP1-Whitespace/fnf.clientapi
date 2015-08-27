@@ -1,13 +1,13 @@
 package com.zuehlke.carrera.relayapi.messages;
 
 /**
- *  There are nine observables delivered by the razor:
- *  ACC: lateral acceleration
- *  GYR: gyro acceleration
- *  MAG: magnetic field
- *  CURRENT from the motor unit
- *  VELO from light barriers
- *  POWER from the pilot
+ * There are nine observables delivered by the razor:
+ * ACC: lateral acceleration
+ * GYR: gyro acceleration
+ * MAG: magnetic field
+ * CURRENT from the motor unit
+ * VELO from light barriers
+ * POWER from the pilot
  */
 public enum ObservableType {
     INVALID,

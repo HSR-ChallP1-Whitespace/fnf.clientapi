@@ -1,11 +1,11 @@
 package com.zuehlke.carrera.javapilot.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zuehlke.carrera.lightstomp.ISTOMPListener;
+import com.zuehlke.carrera.lightstomp.StompClient;
 import com.zuehlke.carrera.relayapi.messages.*;
 import com.zuehlke.carrera.stomp.ParamUtil;
 import com.zuehlke.carrera.stomp.RelayConnection;
-import com.zuehlke.carrera.lightstomp.ISTOMPListener;
-import com.zuehlke.carrera.lightstomp.StompClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +14,10 @@ import java.util.function.Consumer;
 
 public class PilotToRelayStompConnection extends RelayConnection implements PilotToRelayConnection {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PilotToRelayStompConnection.class);
-
     // out bound channels
     public static final String CHANNEL_ANNOUNCE = "/app/pilots/announce";
     public static final String CHANNEL_POWER = "/app/pilots/power";
-
+    private static final Logger LOG = LoggerFactory.getLogger(PilotToRelayStompConnection.class);
     // inbound channels
     private static final String CHANNEL_START_TEMPLATE = "/topic/pilots/{id}/start";
     private static final String CHANNEL_STOP_TEMPLATE = "/topic/pilots/{id}/stop";
@@ -101,7 +99,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
                 }
             });
 
-        }catch (Throwable e){
+        } catch (Throwable e) {
             LOG.error("Can not connect to relay!", e);
             client = null;
             connecting = false;
@@ -112,7 +110,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
     /**
      * Send an announce message to the backend server
      * to notify it about the existence of this race-track.
-     *
+     * <p>
      * Note: The backend expects announce-messages from a racetrack in an interval below 1 second,
      * thus this method should be called repeatedly on a distinct timer thread.
      *
@@ -121,7 +119,7 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
     @Override
     public void announce(String optionalUrl) {
 
-        if(client != null && client.isConnected()) {
+        if (client != null && client.isConnected()) {
             long now = System.currentTimeMillis();
             Object announceMessage = new PilotLifeSign(clientId, super.password, optionalUrl, now);
             try {
@@ -135,54 +133,54 @@ public class PilotToRelayStompConnection extends RelayConnection implements Pilo
     @Override
     public void send(PowerControl powerControl) {
         try {
-            client.stompSend( CHANNEL_POWER, mapper.writeValueAsString(powerControl));
+            client.stompSend(CHANNEL_POWER, mapper.writeValueAsString(powerControl));
         } catch (JsonProcessingException e) {
             LOG.error("Can not JSON serialize announceMessage: " + powerControl, e);
         }
     }
 
-    private void onStartMessage(String message){
+    private void onStartMessage(String message) {
         try {
             RaceStartMessage start = mapper.readValue(message, RaceStartMessage.class);
             onRaceStart.accept(start);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 
-    private void onStopMessage(String message){
+    private void onStopMessage(String message) {
         try {
             RaceStopMessage stop = mapper.readValue(message, RaceStopMessage.class);
             onRaceStop.accept(stop);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 
-    private void onSensorMessage(String message ){
+    private void onSensorMessage(String message) {
         try {
             SensorEvent sensorEvent = mapper.readValue(message, SensorEvent.class);
             onSensor.accept(sensorEvent);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 
-    private void onVelocityMessage(String message ){
+    private void onVelocityMessage(String message) {
         try {
             VelocityMessage velocityMessage = mapper.readValue(message, VelocityMessage.class);
             onVelocityMessage.accept(velocityMessage);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 
-    private void onPenaltyMessage(String message ){
+    private void onPenaltyMessage(String message) {
         try {
             PenaltyMessage penaltyMessage = mapper.readValue(message, PenaltyMessage.class);
             onPenaltyMessage.accept(penaltyMessage);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 }

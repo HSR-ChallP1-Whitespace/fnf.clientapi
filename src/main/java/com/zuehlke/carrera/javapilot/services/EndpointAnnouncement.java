@@ -1,7 +1,7 @@
 package com.zuehlke.carrera.javapilot.services;
 
 /**
- *  Used to announce the availability of a stomp endpoint to the relay station
+ * Used to announce the availability of a stomp endpoint to the relay station
  */
 public class EndpointAnnouncement {
 

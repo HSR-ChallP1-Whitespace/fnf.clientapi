@@ -12,7 +12,7 @@ public class ChannelRegistry {
     private final Map<String, Channel> channels = new HashMap<>();
 
     public Channel getOrCreate(String channelName, Connection connection) {
-        if(!channels.containsKey(channelName)) {
+        if (!channels.containsKey(channelName)) {
             Channel channel = createChannel(channelName, connection);
             channels.put(channelName, channel);
         }

@@ -2,10 +2,9 @@ package com.zuehlke.carrera.stomp;
 
 /**
  * The payload of a STOMP ping challenge/response round trip.
- *
+ * <p>
  * The id value uniquely identifies a STOMP client.
  * The message-id value identifies a single ping-data message.
- *
  */
 public class PingData {
     private String id;
@@ -14,7 +13,8 @@ public class PingData {
     /**
      * Empty constructor for serialisation
      */
-    protected PingData(){ }
+    protected PingData() {
+    }
 
     public PingData(String id, int messageId) {
         this.id = id;

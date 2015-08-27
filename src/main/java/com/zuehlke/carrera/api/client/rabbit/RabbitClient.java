@@ -21,7 +21,7 @@ public class RabbitClient implements Client {
 
     @Override
     public void connect(String url) {
-        if(connected) {
+        if (connected) {
             return;
         }
         try {
@@ -109,11 +109,12 @@ public class RabbitClient implements Client {
 
     private Consumer createDefaultConsumer(final Channel channel, MessageReceiver receiver) {
         return new DefaultConsumer(channel) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
-                        throws IOException {
-                    receiver.receive(new String(body, "UTF-8"));
-                }
-            };
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[]
+                    body)
+                    throws IOException {
+                receiver.receive(new String(body, "UTF-8"));
+            }
+        };
     }
 }

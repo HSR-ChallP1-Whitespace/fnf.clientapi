@@ -11,26 +11,24 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
 
     private final int i0; // earliest index
     private final int ie; // latest index
-
-    private  long earliest;
-    private  long latest;
-    private  long averagePeriod; // the average period between the observations
-    private  long totalPeriod; // the period of the represented period
     private final List<Observation<TYPE>> observations;
-
+    private long earliest;
+    private long latest;
+    private long averagePeriod; // the average period between the observations
+    private long totalPeriod; // the period of the represented period
     private TYPE minVal;
     private TYPE maxVal;
 
     // number of averages that a time at "good" index guess may be from intended time;
     private int goodGuessDistance;
 
-    public TimeSeries(CONTEXT context, List<Observation<TYPE>> observations, boolean sort, int goodGuessDistance ) {
+    public TimeSeries(CONTEXT context, List<Observation<TYPE>> observations, boolean sort, int goodGuessDistance) {
 
         this.context = context;
         this.observations = observations;
         i0 = 0;
         ie = observations.size() - 1;
-        if ( observations.size() > 0 ) {
+        if (observations.size() > 0) {
             if (sort) {
                 observations.sort((o1, o2) -> (int) Math.signum(o1.t - o2.t));
             }
@@ -48,7 +46,7 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
         this.observations = original.observations;
         i0 = start;
         ie = end;
-        if ( observations.size() > 0 ) {
+        if (observations.size() > 0) {
             earliest = observations.get(0).t;
             latest = observations.get(ie).t;
             totalPeriod = latest - earliest;
@@ -58,55 +56,56 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
         }
     }
 
-    public Observation<TYPE> getFirst () {
-        if ( observations.size() > 0) {
+    public Observation<TYPE> getFirst() {
+        if (observations.size() > 0) {
             return observations.get(i0);
         } else {
             return null;
         }
     }
 
-    /** retrieve the last observation
+    /**
+     * retrieve the last observation
      *
      * @return the latest observation
      */
-    public Observation<TYPE> getLast () {
-        if ( observations.size() > 0) {
+    public Observation<TYPE> getLast() {
+        if (observations.size() > 0) {
             return observations.get(ie);
         } else {
             return null;
         }
     }
 
-    public Observation<TYPE> getObservationAtIndex ( int index ) {
-        if (( index < i0 ) || ( index > ie )) {
+    public Observation<TYPE> getObservationAtIndex(int index) {
+        if ((index < i0) || (index > ie)) {
             throw new IndexOutOfBoundsException("index " + index + " not within range [" + i0 + ", " + ie + "]");
         }
         return observations.get(index);
     }
 
-    public Observation<TYPE> getObservationBeforeOrAt ( long t ) {
-        return observations.get ( indexBeforeOrAt(t));
+    public Observation<TYPE> getObservationBeforeOrAt(long t) {
+        return observations.get(indexBeforeOrAt(t));
     }
 
-    public Observation<TYPE> getObservationAfterOrAt ( long t ) {
-        return observations.get ( indexAfterOrAt(t));
+    public Observation<TYPE> getObservationAfterOrAt(long t) {
+        return observations.get(indexAfterOrAt(t));
     }
 
 
-    public TimeSeries<CONTEXT, TYPE> subSeries ( long start, long end ) {
-        return new TimeSeries<>(this, indexAfterOrAt(start), indexBeforeOrAt (end ), goodGuessDistance);
+    public TimeSeries<CONTEXT, TYPE> subSeries(long start, long end) {
+        return new TimeSeries<>(this, indexAfterOrAt(start), indexBeforeOrAt(end), goodGuessDistance);
     }
 
     // assume even distribution of the time series. If that fails, fall back to binary search.
     private int closestIndexLeftOrRight(long t) {
-        int guessedIndex =  (int) (( ie - i0 ) * ( t - earliest ) / totalPeriod);
+        int guessedIndex = (int) ((ie - i0) * (t - earliest) / totalPeriod);
         // if we're not close enough, fall back to binary search
-        if ( Math.abs( observations.get(guessedIndex).t - t ) > goodGuessDistance * averagePeriod ) {
-            guessedIndex = binarySearch ( t );
+        if (Math.abs(observations.get(guessedIndex).t - t) > goodGuessDistance * averagePeriod) {
+            guessedIndex = binarySearch(t);
 
         } else {
-            guessedIndex = closeUp( guessedIndex, t );
+            guessedIndex = closeUp(guessedIndex, t);
         }
         return guessedIndex;
     }
@@ -115,12 +114,12 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
 
         int guessedIndex = closestIndexLeftOrRight(end);
 
-        if ( observations.get(guessedIndex).t > end ) {
-            guessedIndex --;
+        if (observations.get(guessedIndex).t > end) {
+            guessedIndex--;
         } else {
             // if we're on the leftmost of a number of coincidental values, step to rightmost.
-            while ( observations.get(guessedIndex).t == observations.get(guessedIndex + 1).t ) {
-                guessedIndex ++;
+            while (observations.get(guessedIndex).t == observations.get(guessedIndex + 1).t) {
+                guessedIndex++;
             }
         }
         return guessedIndex;
@@ -131,8 +130,8 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
 
         int guessedIndex = closestIndexLeftOrRight(start);
 
-        if ( observations.get(guessedIndex).t < start ) {
-            guessedIndex ++;
+        if (observations.get(guessedIndex).t < start) {
+            guessedIndex++;
         }
         return guessedIndex;
     }
@@ -141,12 +140,12 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
     /**
      * returns the leftmost index with closest t to the left or right, depending on where the original guess was
      */
-    private int closeUp ( int guessedIndex, long time ) {
-        while ( observations.get(guessedIndex + 1 ).t <= time ) {
-            guessedIndex ++;
+    private int closeUp(int guessedIndex, long time) {
+        while (observations.get(guessedIndex + 1).t <= time) {
+            guessedIndex++;
         }
-        while ( observations.get(guessedIndex - 1 ).t >= time ) {
-            guessedIndex --;
+        while (observations.get(guessedIndex - 1).t >= time) {
+            guessedIndex--;
         }
         return guessedIndex;
     }
@@ -154,44 +153,45 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
     /**
      * binary search
      * will always find the index of the latest point in time closest to s
+     *
      * @param time the point in time, the index of which we're searching
      * @return the index with time earlier or at time s
      */
-    private int binarySearch ( long time ) {
+    private int binarySearch(long time) {
         int step = observations.size() / 4;
         int guessedIndex = observations.size() / 2;
 
-        for (;;) {
-            if (observations.get(guessedIndex).t <= time &&  observations.get(guessedIndex + 1).t >= time ) {
+        for (; ; ) {
+            if (observations.get(guessedIndex).t <= time && observations.get(guessedIndex + 1).t >= time) {
                 break;
             }
-            if ( observations.get(guessedIndex).t < time ) {
+            if (observations.get(guessedIndex).t < time) {
                 guessedIndex += step;
             } else {
                 guessedIndex -= step;
             }
             step /= 2;
         }
-        while ( observations.get(guessedIndex - 1 ).t >= time ) {
-            guessedIndex --;
+        while (observations.get(guessedIndex - 1).t >= time) {
+            guessedIndex--;
         }
         return guessedIndex;
     }
 
-    private void determineBoundaries () {
+    private void determineBoundaries() {
         observations.forEach(this::checkBoundaries);
     }
 
-    private void checkBoundaries ( Observation<TYPE> observation ) {
-        if ( maxVal == null ) {
+    private void checkBoundaries(Observation<TYPE> observation) {
+        if (maxVal == null) {
             maxVal = observation.v;
         }
-        if ( minVal == null ) {
+        if (minVal == null) {
             minVal = observation.v;
         }
-        if ( observation.v.compareTo(maxVal) > 0 ) {
+        if (observation.v.compareTo(maxVal) > 0) {
             maxVal = observation.v;
-        } else if ( observation.v.compareTo(minVal) < 0) {
+        } else if (observation.v.compareTo(minVal) < 0) {
             minVal = observation.v;
         }
     }
@@ -200,7 +200,7 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
         return context;
     }
 
-    public List<Observation<TYPE>> getObservations () {
+    public List<Observation<TYPE>> getObservations() {
         return observations;
     }
 
@@ -212,11 +212,11 @@ public class TimeSeries<CONTEXT, TYPE extends Comparable<TYPE>> {
         return maxVal;
     }
 
-    public long getEarliest () {
+    public long getEarliest() {
         return earliest;
     }
 
-    public long getLatest () {
+    public long getLatest() {
         return latest;
     }
 

@@ -1,7 +1,6 @@
 package com.zuehlke.carrera.lightstomp.impl;
 
 
-
 import com.zuehlke.carrera.lightstomp.StompFrame;
 import com.zuehlke.carrera.lightstomp.StompParseException;
 import com.zuehlke.carrera.lightstomp.stompSocket.ISocketListener;
@@ -16,7 +15,7 @@ import java.net.URI;
 
 /**
  * Implements a simple STOMP over Websocket
- *
+ * <p>
  * Created by paba on 11/17/14.
  */
 public class StompWebSocket implements IStompSocket {
@@ -25,18 +24,16 @@ public class StompWebSocket implements IStompSocket {
 
 
     private final URI server;
+    private final StompFrameParser parser = new StompFrameParser();
     private Session webSession;
     private ISocketListener listener;
 
-    private final StompFrameParser parser = new StompFrameParser();
 
-
-
-    public StompWebSocket(URI url)   {
+    public StompWebSocket(URI url) {
         server = url;
     }
 
-    public void connect(ISocketListener listener){
+    public void connect(ISocketListener listener) {
 
         this.listener = listener;
 
@@ -48,14 +45,14 @@ public class StompWebSocket implements IStompSocket {
                 @Override
                 public void onOpen(Session session, EndpointConfig config) {
                     webSession = session;
-                    session.addMessageHandler(new MessageHandler.Whole<byte[]>(){ // WARNING: DO NOT USE LAMBDA HERE!
+                    session.addMessageHandler(new MessageHandler.Whole<byte[]>() { // WARNING: DO NOT USE LAMBDA HERE!
                         @Override
                         public void onMessage(byte[] bytes) {
                             onWebSocketMessageReceivedBinary(bytes);
                         }
                     });
 
-                    session.addMessageHandler(new MessageHandler.Whole<String>(){ // WARNING: DO NOT USE LAMBDA HERE!
+                    session.addMessageHandler(new MessageHandler.Whole<String>() { // WARNING: DO NOT USE LAMBDA HERE!
                         @Override
                         public void onMessage(String s) {
                             onWebSocketMessageReceivedText(s);
@@ -67,7 +64,7 @@ public class StompWebSocket implements IStompSocket {
                 }
 
                 public void onClose(javax.websocket.Session session, javax.websocket.CloseReason closeReason) {
-                    listener.closed(closeReason.getCloseCode() +": "+ closeReason.getReasonPhrase());
+                    listener.closed(closeReason.getCloseCode() + ": " + closeReason.getReasonPhrase());
                 }
 
                 public void onError(javax.websocket.Session session, Throwable thr) {
@@ -77,7 +74,7 @@ public class StompWebSocket implements IStompSocket {
             }, cec, server);
 
         } catch (DeploymentException | IOException e) {
-            LOG.error("Failed to connect to "+server+" -> " + e.getMessage() );
+            LOG.error("Failed to connect to " + server + " -> " + e.getMessage());
             listener.connectionFailed(e);
         }
     }
@@ -95,9 +92,9 @@ public class StompWebSocket implements IStompSocket {
     }
 
     @Override
-    public void sendFrame(StompFrame frame){
+    public void sendFrame(StompFrame frame) {
         Session session = webSession;
-        if(session != null && session.isOpen()){
+        if (session != null && session.isOpen()) {
             try {
                 //session.getBasicRemote().sendBinary(frame.toByteBuffer());
                 session.getBasicRemote().sendText(frame.toString());
@@ -108,13 +105,13 @@ public class StompWebSocket implements IStompSocket {
     }
 
 
-    private void onWebSocketMessageReceivedBinary(byte[] message){
+    private void onWebSocketMessageReceivedBinary(byte[] message) {
         StompFrame frame = null;
         try {
 
             frame = parser.parse(message);
 
-            if(listener != null) {
+            if (listener != null) {
                 listener.onStompFrameReceived(frame);
             }
 
@@ -123,13 +120,13 @@ public class StompWebSocket implements IStompSocket {
         }
     }
 
-    private void onWebSocketMessageReceivedText(String message){
+    private void onWebSocketMessageReceivedText(String message) {
         StompFrame frame = null;
         try {
 
             frame = parser.parse(message);
 
-            if(listener != null) {
+            if (listener != null) {
                 listener.onStompFrameReceived(frame);
             }
 
@@ -137,8 +134,6 @@ public class StompWebSocket implements IStompSocket {
             LOG.error("Illegal STOMP Frame received!", e);
         }
     }
-
-
 
 
 }

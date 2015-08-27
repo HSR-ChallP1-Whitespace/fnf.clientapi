@@ -13,18 +13,17 @@ public class AkkaUtils {
 
     public static final long ASK_TIMEOUT = 5000;
 
-     /**
+    /**
      * @param callingClass the calling class
      * @param expectedType the type expected for the return value
-     * @param actor the actor to ask
-     * @param message the message containing the "question"
-     * @param <T>
-     * Using the Akka Ask-Pattern, send a query message
-     * to the any of the actors referenced from here, and expect a answer message
-     * in reasonable time.
+     * @param actor        the actor to ask
+     * @param message      the message containing the "question"
+     * @param <T>          Using the Akka Ask-Pattern, send a query message
+     *                     to the any of the actors referenced from here, and expect a answer message
+     *                     in reasonable time.
      * @return the object that the receiving actor hopefully sends back right away.
      */
-    public static <T> T askActor( Class<?> callingClass, Class<T> expectedType, ActorRef actor, Object message){
+    public static <T> T askActor(Class<?> callingClass, Class<T> expectedType, ActorRef actor, Object message) {
         Duration durationAskTimeout = Duration.create(ASK_TIMEOUT, TimeUnit.MILLISECONDS);
         try {
             return expectedType.cast(Await.result(

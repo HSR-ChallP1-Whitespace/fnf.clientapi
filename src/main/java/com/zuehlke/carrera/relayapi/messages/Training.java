@@ -19,7 +19,8 @@ public class Training {
         this.recordData = recordData;
     }
 
-    public Training () {}
+    public Training() {
+    }
 
     public String getTeam() {
         return team;
