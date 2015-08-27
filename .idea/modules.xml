@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/carrera.clientapi.iml" filepath="$PROJECT_DIR$/carrera.clientapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fnf.clientapi.iml" filepath="$PROJECT_DIR$/fnf.clientapi.iml" />
     </modules>
   </component>
 </project>

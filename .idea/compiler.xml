@@ -17,16 +17,16 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for carrera.clientapi" enabled="true">
+      <profile default="false" name="Annotation profile for fnf.clientapi" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="carrera.clientapi" />
+        <module name="fnf.clientapi" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="carrera.clientapi" target="1.8" />
+      <module name="fnf.clientapi" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
