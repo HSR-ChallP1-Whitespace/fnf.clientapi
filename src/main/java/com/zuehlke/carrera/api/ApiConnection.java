@@ -48,7 +48,7 @@ class ApiConnection {
     private <T> Subscription subscriptionFor(String channel, Consumer<T> consumer, Class<T> messageType) {
         return new Subscription(channel, message -> {
             LOG.info("Receiving message in channel " + channel);
-            consumer.accept(serializer.deserialize(message, messageType));
+            consumer.accept(serializer.deserialize(message.getBytes(), messageType));
         });
     }
 }

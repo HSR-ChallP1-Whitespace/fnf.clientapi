@@ -9,7 +9,7 @@ public class JacksonSerializer implements Serializer {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public <T> T deserialize(String message, Class<T> messageType) {
+    public <T> T deserialize(byte[] message, Class<T> messageType) {
         try {
             return trySerialize(message, messageType);
         } catch (IOException e) {
@@ -17,16 +17,16 @@ public class JacksonSerializer implements Serializer {
         }
     }
 
-    private <T> T trySerialize(String message, Class<T> messageType) throws IOException {
-        return mapper.readValue(message.getBytes(), messageType);
+    private <T> T trySerialize(byte[] message, Class<T> messageType) throws IOException {
+        return mapper.readValue(message, messageType);
     }
 
     @Override
-    public String serialize(Object o) {
+    public byte[] serialize(Object o) {
         try {
-            return mapper.writeValueAsString(o);
+            return mapper.writeValueAsBytes(o);
         } catch (JsonProcessingException e) {
-            throw new SerializationException("Could not deserialize message", e);
+            throw new SerializationException("Could not serialize message", e);
         }
     }
 }

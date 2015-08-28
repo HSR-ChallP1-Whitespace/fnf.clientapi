@@ -68,4 +68,8 @@ public class VelocityMessage {
     public void offSetTime(long startTime) {
         t = (int)(timeStamp - startTime );
     }
+
+    public String getSourceId() {
+        return sourceId;
+    }
 }

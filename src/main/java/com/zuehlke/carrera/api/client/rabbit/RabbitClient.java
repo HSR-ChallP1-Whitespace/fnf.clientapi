@@ -73,7 +73,7 @@ public class RabbitClient implements Client {
     }
 
     @Override
-    public void publish(String channelName, String message) {
+    public void publish(String channelName, byte[] message) {
         try {
             tryPublish(channelName, message);
         } catch (IOException e) {
@@ -81,10 +81,10 @@ public class RabbitClient implements Client {
         }
     }
 
-    private void tryPublish(String channelName, String message) throws IOException {
+    private void tryPublish(String channelName, byte[] message) throws IOException {
         Channel channel = registry.getOrCreate(channelName, connection);
         AMQP.BasicProperties publishProperties = createPublishProperties();
-        channel.basicPublish("", channelName, publishProperties, message.getBytes());
+        channel.basicPublish("", channelName, publishProperties, message);
     }
 
     private AMQP.BasicProperties createPublishProperties() {

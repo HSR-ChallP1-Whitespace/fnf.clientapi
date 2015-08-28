@@ -98,4 +98,8 @@ public class PowerControl implements Serializable {
     public void offSetTime ( long offset ) {
         t = (int)(timeStamp - offset);
     }
+
+    public void setT(int t) {
+        this.t = t;
+    }
 }
