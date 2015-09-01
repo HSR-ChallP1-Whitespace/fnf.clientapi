@@ -8,7 +8,8 @@ public class PenaltyMessage {
     private String barrier;
     private String raceTrack;
 
-    public PenaltyMessage() {}
+    public PenaltyMessage() {
+    }
 
     public PenaltyMessage(String raceTrack, String barrier, double actualSpeed, double speedLimit, int penalty_ms) {
         this.raceTrack = raceTrack;

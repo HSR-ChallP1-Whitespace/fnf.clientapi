@@ -19,18 +19,18 @@ public class TimeSeriesTest {
         TimeSeries<String, Double> sub = ts.subSeries(28, 48);
 
         Assert.assertEquals(9, sub.getSize());
-        Assert.assertTrue ( 7.0 == sub.getFirst().v); // t == 29
-        Assert.assertTrue ( 15.0 == sub.getLast().v); // t == 48 - double occurrence
+        Assert.assertTrue(7.0 == sub.getFirst().v); // t == 29
+        Assert.assertTrue(15.0 == sub.getLast().v); // t == 48 - double occurrence
 
         // Boundaries spot-on
         TimeSeries<String, Double> sub1 = sub.subSeries(37, 47);
         Assert.assertEquals(5, sub1.getSize());
-        Assert.assertTrue ( 9.0 == sub1.getFirst().v); // t == 37
-        Assert.assertTrue ( 13.0 == sub1.getLast().v); // t == 47 - double occurrence
+        Assert.assertTrue(9.0 == sub1.getFirst().v); // t == 37
+        Assert.assertTrue(13.0 == sub1.getLast().v); // t == 47 - double occurrence
     }
 
     @Test
-    public void testUnEvenlyDistibutedSeries () {
+    public void testUnEvenlyDistibutedSeries() {
 
         List<Observation<Double>> obs = createUnevenlyDistributedSeries();
 
@@ -40,11 +40,10 @@ public class TimeSeriesTest {
         TimeSeries<String, Double> sub = ts.subSeries(510, 524);
 
         Assert.assertEquals(7, sub.getSize());
-        Assert.assertTrue ( 14.0 == sub.getFirst().v); // t ==
-        Assert.assertTrue ( 20.0 == sub.getLast().v); // t == 48 - double occurrence
+        Assert.assertTrue(14.0 == sub.getFirst().v); // t ==
+        Assert.assertTrue(20.0 == sub.getLast().v); // t == 48 - double occurrence
 
     }
-
 
 
     private List<Observation<Double>> createUnevenlyDistributedSeries() {

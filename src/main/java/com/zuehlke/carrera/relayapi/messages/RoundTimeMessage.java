@@ -1,7 +1,7 @@
 package com.zuehlke.carrera.relayapi.messages;
 
 /**
- *  signals a finished round that will be used for race evaluation
+ * signals a finished round that will be used for race evaluation
  */
 public class RoundTimeMessage {
 
@@ -10,7 +10,8 @@ public class RoundTimeMessage {
     private String team;
     private String track;
 
-    public RoundTimeMessage(){}
+    public RoundTimeMessage() {
+    }
 
     public RoundTimeMessage(String track, String team, long timestamp, long roundDuration) {
         this.timestamp = timestamp;
@@ -23,12 +24,24 @@ public class RoundTimeMessage {
         return roundDuration;
     }
 
+    public void setRoundDuration(long roundDuration) {
+        this.roundDuration = roundDuration;
+    }
+
     public String getTeam() {
         return team;
     }
 
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
     public String getTrack() {
         return track;
+    }
+
+    public void setTrack(String track) {
+        this.track = track;
     }
 
     public long getTimestamp() {
@@ -37,17 +50,5 @@ public class RoundTimeMessage {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public void setRoundDuration(long roundDuration) {
-        this.roundDuration = roundDuration;
-    }
-
-    public void setTeam(String team) {
-        this.team = team;
-    }
-
-    public void setTrack(String track) {
-        this.track = track;
     }
 }
