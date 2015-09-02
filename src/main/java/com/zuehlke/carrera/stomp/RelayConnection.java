@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- *  Base class for Stomp connections to the relay
+ * Base class for Stomp connections to the relay
  */
 public abstract class RelayConnection {
 
@@ -33,7 +33,7 @@ public abstract class RelayConnection {
 
     public RelayConnection(String relayUrl, String clientId, String user, String password) {
 
-        if(relayUrl == null) throw new IllegalArgumentException("relayUrl must not be NULL!");
+        if (relayUrl == null) throw new IllegalArgumentException("relayUrl must not be NULL!");
 
         this.relayUrl = relayUrl;
         this.clientId = clientId;
@@ -43,31 +43,32 @@ public abstract class RelayConnection {
 
     /**
      * Ensures the connection to the relay server is established.
-     *
+     * <p>
      * If this client is not yet connected, or the connection was lost,
      * this method will try to (re)connect to the backend.
      */
-    public synchronized void ensureConnection(){
+    public synchronized void ensureConnection() {
 
-        if(connecting){
+        if (connecting) {
             LOG.debug("Already trying to connect, skipping...");
             return;
         }
 
-        if(client == null || !client.isConnected()){
+        if (client == null || !client.isConnected()) {
             connect();
-        }else{
+        } else {
             LOG.debug("Already connected, everything fine.");
         }
     }
 
-    protected abstract void connect ();
+    protected abstract void connect();
 
     /**
      * Try to connect to the backend using a STOMP client
+     *
      * @param subscribers the list of subscribers for incoming messages
      */
-    protected synchronized void connect( List<ChannelSubscriber> subscribers ){
+    protected synchronized void connect(List<ChannelSubscriber> subscribers) {
         connecting = true;
         client = null;
         try {
@@ -85,7 +86,7 @@ public abstract class RelayConnection {
                     LOG.info("Subscribing to channel '" + pingChannel + "'");
                     client.subscribe(pingChannel, RelayConnection.this::onPingMessage);
 
-                    for ( ChannelSubscriber subscriber : subscribers ) {
+                    for (ChannelSubscriber subscriber : subscribers) {
                         String channel = subscriber.getChannel();
                         LOG.info("Subscribing to channel '" + channel + "'");
                         client.subscribe(channel, subscriber.getConsumer());
@@ -108,58 +109,56 @@ public abstract class RelayConnection {
                 }
             });
 
-        }catch (Throwable e){
+        } catch (Throwable e) {
             LOG.error("Can not connect to relay!", e);
             client = null;
             connecting = false;
         }
     }
 
-    private void onPingMessage(String message){
+    private void onPingMessage(String message) {
         try {
             PingData ping = mapper.readValue(message, PingData.class);
 
             // We got a ping challenge. We just have to return this object.
-            if(!sendObject( CHANNEL_PING, ping )){
+            if (!sendObject(CHANNEL_PING, ping)) {
                 LOG.warn("Failed to respond to ping challenge, sending back ping-data failed.");
             }
 
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " +System.lineSeparator()+ message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
         }
     }
 
     /**
      * Send the given message to the given STOMP channel
+     *
      * @param channel The Stomp channel
      * @param message The message object (will be serialized into JSON)
      * @return Returns true if the STOMP message has been sent successfully
      */
     protected boolean sendObject(String channel, Object message) {
-        if(channel == null) throw new IllegalArgumentException("channel must not be NULL!");
-        if(message == null) throw new IllegalArgumentException("message must not be NULL!");
+        if (channel == null) throw new IllegalArgumentException("channel must not be NULL!");
+        if (message == null) throw new IllegalArgumentException("message must not be NULL!");
 
         StompClient myClient = client;
-        if(myClient != null && myClient.isConnected()){
+        if (myClient != null && myClient.isConnected()) {
             try {
                 String jsonMessage = mapper.writeValueAsString(message);
-                myClient.stompSend( channel, jsonMessage );
+                myClient.stompSend(channel, jsonMessage);
                 return true;
             } catch (JsonProcessingException e) {
                 LOG.error("Can not send message since JSON serialisation failed!", e);
             }
-        }else{
+        } else {
             long now = System.currentTimeMillis();
-            if ( lastWarning < now - 5000 ) {
+            if (lastWarning < now - 5000) {
                 LOG.warn("Can not send message to channel (" + channel + ") since no connection is available.");
             }
             lastWarning = now;
         }
         return false;
     }
-
-
-
 
 
 }

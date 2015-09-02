@@ -6,7 +6,7 @@ public class StandardMessage {
 
     protected long timestamp;
 
-    public StandardMessage () {
+    public StandardMessage() {
         timestamp = System.currentTimeMillis();
     }
 

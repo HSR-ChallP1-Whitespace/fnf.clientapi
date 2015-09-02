@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * A Power Control contains the power value which controls the
  * digital power value of a race car.
- *
+ * <p>
  * Created by wgiersche on 06/09/14.
  */
 public class PowerControl implements Serializable {
@@ -26,11 +26,10 @@ public class PowerControl implements Serializable {
 
 
     /**
-     *
-     * @param p the power value
-     * @param teamId the team id
+     * @param p          the power value
+     * @param teamId     the team id
      * @param accessCode the team's access code
-     * @param timestamp the current timestamp
+     * @param timestamp  the current timestamp
      */
     public PowerControl(int p, String teamId, String accessCode, long timestamp) {
 
@@ -42,7 +41,8 @@ public class PowerControl implements Serializable {
 
     /**
      * create a mere value object for storage purposes where the context is known otherwise.
-     * @param p the original power
+     *
+     * @param p         the original power
      * @param timeStamp the original timestamp;
      */
     private PowerControl(int p, long timeStamp) {
@@ -78,7 +78,7 @@ public class PowerControl implements Serializable {
         return t;
     }
 
-    public String toString(){
+    public String toString() {
         return getP() + "";
     }
 
@@ -95,7 +95,7 @@ public class PowerControl implements Serializable {
         return new PowerControl(p, timeStamp);
     }
 
-    public void offSetTime ( long offset ) {
-        t = (int)(timeStamp - offset);
+    public void offSetTime(long offset) {
+        t = (int) (timeStamp - offset);
     }
 }

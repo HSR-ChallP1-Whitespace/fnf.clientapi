@@ -1,7 +1,7 @@
 package com.zuehlke.carrera.relayapi.messages;
 
 /**
- *  the response to a training request. This goes back to the pilot;
+ * the response to a training request. This goes back to the pilot;
  */
 public class TrainingResponse {
 

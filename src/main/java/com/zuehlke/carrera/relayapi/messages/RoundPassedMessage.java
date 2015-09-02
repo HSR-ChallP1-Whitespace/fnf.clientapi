@@ -8,9 +8,10 @@ public class RoundPassedMessage {
     private long timeStamp;
     private String raceTrackId;
 
-    public RoundPassedMessage(){}
+    public RoundPassedMessage() {
+    }
 
-    public RoundPassedMessage( String raceTrackId, long timeStamp) {
+    public RoundPassedMessage(String raceTrackId, long timeStamp) {
         this.timeStamp = timeStamp;
         this.raceTrackId = raceTrackId;
     }
@@ -19,12 +20,12 @@ public class RoundPassedMessage {
         return timeStamp;
     }
 
-    public String getRaceTrackId() {
-        return raceTrackId;
-    }
-
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getRaceTrackId() {
+        return raceTrackId;
     }
 
     public void setRaceTrackId(String raceTrackId) {

@@ -18,20 +18,22 @@ public class StompFrame {
 
     private final FrameType command;
     private final Map<String, String> headers = new HashMap<>();
+    private final Charset encoding = Charset.forName("UTF-8");
     private String body;
 
-    public StompFrame(FrameType command, String channel){
+    public StompFrame(FrameType command, String channel) {
         this.command = command;
         withHeader("destination", channel);
     }
 
-    public StompFrame(FrameType command){
+    public StompFrame(FrameType command) {
         this.command = command;
     }
 
     /**
      * Add the header value to this frame
-     * @param key the header key
+     *
+     * @param key   the header key
      * @param value the value of the param
      * @return a stomp frame
      */
@@ -42,6 +44,7 @@ public class StompFrame {
 
     /**
      * Set the body for this frame. (Overwrites an existing body)
+     *
      * @param message the body
      * @return the stomp frame
      */
@@ -50,12 +53,13 @@ public class StompFrame {
         return this;
     }
 
-    public FrameType getType(){
+    public FrameType getType() {
         return command;
     }
 
     /**
      * Returns the value of the requested header, or null if not present
+     *
      * @param key the key of the header value
      * @return the header value
      */
@@ -63,13 +67,12 @@ public class StompFrame {
         return headers.get(key);
     }
 
-    private final Charset encoding = Charset.forName("UTF-8");
-
     /**
      * Returns the frame as byte array ready to be sent
+     *
      * @return a byte buffer representation of this frame
      */
-    public ByteBuffer toByteBuffer(){
+    public ByteBuffer toByteBuffer() {
         ByteArrayOutputStream sbuf = new ByteArrayOutputStream(250);
 
         byte[] bodyData = (body != null) ? body.getBytes(encoding) : new byte[0];
@@ -104,11 +107,11 @@ public class StompFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ByteBuffer.wrap( sbuf.toByteArray() );
+        return ByteBuffer.wrap(sbuf.toByteArray());
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return new String(toByteBuffer().array(), encoding);
     }
 

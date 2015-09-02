@@ -16,6 +16,7 @@ public interface IStompSocket {
 
     /**
      * Send the given Frame
+     *
      * @param request the request frame
      */
     void sendFrame(StompFrame request);

@@ -14,7 +14,7 @@ public class TrainingRequest {
     public TrainingRequest() {
     }
 
-    public TrainingRequest(String team, String accessCode, String design, String description, boolean recordData ) {
+    public TrainingRequest(String team, String accessCode, String design, String description, boolean recordData) {
         this.team = team;
         this.accessCode = accessCode;
         this.design = design;

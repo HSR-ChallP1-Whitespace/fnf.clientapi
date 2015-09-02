@@ -4,7 +4,7 @@ package com.zuehlke.carrera.relayapi.messages;
 import org.springframework.data.annotation.Transient;
 
 /**
- *  represents a velocity message as received from one of the light barriers
+ * represents a velocity message as received from one of the light barriers
  */
 public class VelocityMessage {
 
@@ -12,14 +12,10 @@ public class VelocityMessage {
     private long timeStamp;
     private double velocity;
     private String sourceId;
-
-    public int getT() {
-        return t;
-    }
-
     private int t;
 
-    public VelocityMessage () {};
+    public VelocityMessage() {
+    }
 
     public VelocityMessage(String racetrackId, long timeStamp, double velocity, String sourceId) {
         this.racetrackId = racetrackId;
@@ -28,8 +24,18 @@ public class VelocityMessage {
         this.sourceId = sourceId;
     }
 
+    ;
+
+    public int getT() {
+        return t;
+    }
+
     public String getRacetrackId() {
         return racetrackId;
+    }
+
+    public void setRacetrackId(String racetrackId) {
+        this.racetrackId = racetrackId;
     }
 
     @Transient
@@ -37,16 +43,12 @@ public class VelocityMessage {
         return timeStamp;
     }
 
-    public double getVelocity() {
-        return velocity;
-    }
-
-    public void setRacetrackId(String racetrackId) {
-        this.racetrackId = racetrackId;
-    }
-
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public double getVelocity() {
+        return velocity;
     }
 
     public void setVelocity(double velocity) {
@@ -55,7 +57,7 @@ public class VelocityMessage {
 
     @Override
     public String toString() {
-        return String.format("from %s at %d: velocity = %f.", racetrackId, timeStamp, velocity );
+        return String.format("from %s at %d: velocity = %f.", racetrackId, timeStamp, velocity);
     }
 
     /**
@@ -66,6 +68,6 @@ public class VelocityMessage {
     }
 
     public void offSetTime(long startTime) {
-        t = (int)(timeStamp - startTime );
+        t = (int) (timeStamp - startTime);
     }
 }

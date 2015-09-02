@@ -22,7 +22,7 @@ class ApiConnection {
 
     public void connect(String url) {
         client.connect(url);
-        for(Subscription subscription : subscriptions) {
+        for (Subscription subscription : subscriptions) {
             subscription.subscribe(client);
         }
     }
@@ -32,7 +32,7 @@ class ApiConnection {
     }
 
     public void publishTo(String channelName, Object message) {
-        if(client.isConnected()) {
+        if (client.isConnected()) {
             LOG.info("Publishing to " + channelName);
             client.publish(channelName, serializer.serialize(message));
             return;

@@ -16,14 +16,15 @@ class SubscriptionRouter {
 
     /**
      * Register a route
-     * @param channel The channel
+     *
+     * @param channel  The channel
      * @param listener the listener
      */
-    public synchronized void register(String channel, MessageListener listener){
+    public synchronized void register(String channel, MessageListener listener) {
 
         // Channel map
         List<MessageListener> listeners = channelToListenerMap.get(channel);
-        if(listeners == null){
+        if (listeners == null) {
             listeners = new ArrayList<>();
             channelToListenerMap.put(channel, listeners);
         }
@@ -33,13 +34,14 @@ class SubscriptionRouter {
     /**
      * Routes the given message to the given channel and notify all
      * listeners of this channel.
+     *
      * @param channel the id of the simulator or pilot to route to
      * @param message the message to be routed
      */
-    public synchronized void routeMessage(String channel, String message){
+    public synchronized void routeMessage(String channel, String message) {
         List<MessageListener> listeners = channelToListenerMap.get(channel);
-        if(listeners != null){
-            for(MessageListener l : listeners){
+        if (listeners != null) {
+            for (MessageListener l : listeners) {
                 l.messageReceived(message);
             }
         }

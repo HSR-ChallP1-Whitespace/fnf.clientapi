@@ -3,7 +3,7 @@ package com.zuehlke.carrera.akkautils;
 import akka.actor.UntypedActor;
 
 /**
- *  A log message 'knows' the sending actor
+ * A log message 'knows' the sending actor
  */
 public class LogMessage {
 

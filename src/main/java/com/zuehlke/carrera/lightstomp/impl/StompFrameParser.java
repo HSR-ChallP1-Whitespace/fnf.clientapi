@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 /**
  * A parser which parses STOMP frames in O(n)
- *
- *
+ * <p>
+ * <p>
  * Created by paba on 11/21/14.
  */
 class StompFrameParser {
@@ -20,18 +20,18 @@ class StompFrameParser {
     private final Charset encoding = Charset.forName("UTF-8");
 
     public StompFrame parse(String data) throws StompParseException {
-        if(data == null) throw new IllegalArgumentException("data must not be NULL!");
+        if (data == null) throw new IllegalArgumentException("data must not be NULL!");
         return parse(data.getBytes(encoding));
     }
 
     public StompFrame parse(ByteBuffer data) throws StompParseException {
-        if(data == null) throw new IllegalArgumentException("data must not be NULL!");
+        if (data == null) throw new IllegalArgumentException("data must not be NULL!");
         return parse(data.array());
     }
 
     public StompFrame parse(byte[] data) throws StompParseException {
 
-        if(data == null) throw new IllegalArgumentException("data must not be NULL!");
+        if (data == null) throw new IllegalArgumentException("data must not be NULL!");
 
         StompFrame frame = null;
 
@@ -51,7 +51,7 @@ class StompFrameParser {
                 if (data[i] == StompFrame.PROTOCOL_EOL) {
 
                     // Skip CR after a LF
-                    if(data.length > i+1 && data[i+1] == '\r' ){
+                    if (data.length > i + 1 && data[i + 1] == '\r') {
                         i++;
                     }
 
@@ -76,7 +76,7 @@ class StompFrameParser {
                         // Two EOLs - Body starts after this OR we are done
                         p++; // Skip this EOL
                         String body = parseBody(data, p, frame);
-                        if(body != null) {
+                        if (body != null) {
                             frame.withBody(body);
                         }
                         break;
@@ -84,16 +84,17 @@ class StompFrameParser {
                 } else if (data[i] == StompFrame.PROTOCOL_END) {
                     previousWasEOL = false;
                     break;
-                }else{
+                } else {
                     previousWasEOL = false;
                 }
 
-                if(consumed){
+                if (consumed) {
                     p = i + 1;
                 }
             }
-        }catch (Throwable cause){
-            throw new StompParseException("Can not parse message:" + System.lineSeparator() + new String(data, encoding), cause);
+        } catch (Throwable cause) {
+            throw new StompParseException("Can not parse message:" + System.lineSeparator() + new String(data,
+                    encoding), cause);
         }
 
         return frame;
@@ -103,14 +104,14 @@ class StompFrameParser {
     private String parseBody(byte[] data, int start, StompFrame frame) throws StompParseException {
         String strLenght = frame.getHeaderValue("content-length");
         int bodySize = -1;
-        if(strLenght != null){
+        if (strLenght != null) {
             bodySize = Integer.parseInt(strLenght);
         }
 
         String body;
-        if(bodySize != -1) {
+        if (bodySize != -1) {
             body = copyBody(data, start, start + bodySize);
-        }else{
+        } else {
             body = copyBody(data, start);
         }
 
@@ -124,17 +125,20 @@ class StompFrameParser {
         return new Pair<>(parts[0], parts[1]);
     }
 
-    private FrameType parseFrameType(byte[] data, int start, int end){
+    private FrameType parseFrameType(byte[] data, int start, int end) {
         String word = copyWord(data, start, end);
         return Enum.valueOf(FrameType.class, word);
     }
 
     private String copyWord(byte[] data, int start, int end) {
-        if(start < 0) throw new IllegalArgumentException("start "+start+" must be >= 0");
-        if(end < 0) throw new IllegalArgumentException("end "+end+" must be >= 0");
-        if(start >= data.length) throw new IllegalArgumentException("start index "+start+" was bigger than the whole data " + data.length);
-        if(end < start) throw new IllegalArgumentException("end "+end+" must be bigger than start index " + start);
-        if(end >= data.length) throw new IllegalArgumentException("end index "+end+" was bigger than the whole data " + data.length);
+        if (start < 0) throw new IllegalArgumentException("start " + start + " must be >= 0");
+        if (end < 0) throw new IllegalArgumentException("end " + end + " must be >= 0");
+        if (start >= data.length)
+            throw new IllegalArgumentException("start index " + start + " was bigger than the whole data " + data
+                    .length);
+        if (end < start) throw new IllegalArgumentException("end " + end + " must be bigger than start index " + start);
+        if (end >= data.length)
+            throw new IllegalArgumentException("end index " + end + " was bigger than the whole data " + data.length);
 
         return new String(Arrays.copyOfRange(data, start, end), encoding);
     }
@@ -143,15 +147,15 @@ class StompFrameParser {
 
         // find the end of the body, which is specified by a NULL byte
         int end = -1;
-        for(int i=0; data.length > i; i++){
-            if(data[i] == StompFrame.PROTOCOL_END){
+        for (int i = 0; data.length > i; i++) {
+            if (data[i] == StompFrame.PROTOCOL_END) {
                 end = i;
                 break;
             }
         }
-        if(end != -1) {
+        if (end != -1) {
             return copyBody(data, start, end);
-        }else{
+        } else {
             throw new StompParseException("Body does not end with NULL Byte!");
         }
     }

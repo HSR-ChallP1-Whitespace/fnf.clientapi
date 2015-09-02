@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *  represents all relevant data collected during a trainging or race
+ * represents all relevant data collected during a trainging or race
  */
 public class RaceEventData {
 
-    /** Assume that a first guess at the position of an observation in the time series
+    /**
+     * Assume that a first guess at the position of an observation in the time series
      * is "good enough" if it lands within this distance from the target value;
      * See javadoc of TimeSeries for a better understanding of what that means.
      */
@@ -85,9 +86,9 @@ public class RaceEventData {
 
     public void offSetAll() {
 
-        sensorEvents.forEach(e->e.offSetTime(startTime));
-        powerControls.forEach(p->p.offSetTime(startTime));
-        velocityMessages.forEach(v->v.offSetTime(startTime));
+        sensorEvents.forEach(e -> e.offSetTime(startTime));
+        powerControls.forEach(p -> p.offSetTime(startTime));
+        velocityMessages.forEach(v -> v.offSetTime(startTime));
 
     }
 
@@ -95,14 +96,14 @@ public class RaceEventData {
         return velocityMessages;
     }
 
-    public TimeSeries<RaceObservationContext, Integer> getAsTimeSeries ( ObservableType type, boolean sort ) {
+    public TimeSeries<RaceObservationContext, Integer> getAsTimeSeries(ObservableType type, boolean sort) {
         List<Observation<Integer>> observations = new ArrayList<>();
         RaceObservationContext context = new RaceObservationContext(teamId, trackId, type.name(), raceType, startTime);
 
-        if ( type.isSensorEventType() ) {
-            for ( SensorEvent event: sensorEvents ) {
+        if (type.isSensorEventType()) {
+            for (SensorEvent event : sensorEvents) {
                 long t = event.getT(); //imeStamp() - context.getStartTime();
-                switch ( type ) {
+                switch (type) {
                     case ACC0:
                         observations.add(new Observation<>(t, event.getA()[0]));
                         break;
@@ -133,12 +134,12 @@ public class RaceEventData {
                 }
             }
         } else {
-            if ( type == ObservableType.POWER ) {
+            if (type == ObservableType.POWER) {
                 observations.addAll(powerControls.stream().map(control -> new Observation<>(
                         control.getT(), //TimeStamp() - context.getStartTime(),
                         (int) control.getP())).collect(Collectors.toList()));
 
-            } else if ( type == ObservableType.VELO ) {
+            } else if (type == ObservableType.VELO) {
                 observations.addAll(velocityMessages.stream().map(
                         velocityMessage -> new Observation<>(
                                 velocityMessage.getT(), //imeStamp() - context.getStartTime(),

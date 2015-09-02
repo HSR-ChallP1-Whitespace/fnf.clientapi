@@ -21,7 +21,8 @@ public class RaceStopMessage extends StandardMessage {
     /**
      * Empty constructor for serialisation
      */
-    public RaceStopMessage(){}
+    public RaceStopMessage() {
+    }
 
     public RaceStopMessage(String trackId) {
         this.trackId = trackId;
@@ -31,28 +32,28 @@ public class RaceStopMessage extends StandardMessage {
         return trackId;
     }
 
-    public String getTeamId() {
-        return teamId;
-    }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public RaceType getRaceType() {
-        return raceType;
-    }
-
     public void setTrackId(String trackId) {
         this.trackId = trackId;
+    }
+
+    public String getTeamId() {
+        return teamId;
     }
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public RaceType getRaceType() {
+        return raceType;
     }
 
     public void setRaceType(RaceType raceType) {
