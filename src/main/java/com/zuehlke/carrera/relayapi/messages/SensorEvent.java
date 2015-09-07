@@ -187,4 +187,8 @@ public class SensorEvent implements Serializable {
 
         return new SensorEvent(null, a, g, m, timeStamp);
     }
+
+    public void setT(int t) {
+        this.t = t;
+    }
 }

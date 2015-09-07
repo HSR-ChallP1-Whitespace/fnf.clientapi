@@ -68,6 +68,7 @@ public class StompWebSocket implements IStompSocket {
                 }
 
                 public void onError(javax.websocket.Session session, Throwable thr) {
+                    thr.printStackTrace();
                     listener.closed(thr.getClass().getCanonicalName() + ": " + thr.getMessage());
                 }
 
@@ -85,6 +86,15 @@ public class StompWebSocket implements IStompSocket {
         return server.getHost();
     }
 
+    @Override
+    public void disconnect() {
+        try {
+            webSession.close();
+        } catch (IOException ignored) {
+        } finally {
+            webSession = null;
+        }
+    }
     @Override
     public boolean isConnected() {
         Session session = webSession;

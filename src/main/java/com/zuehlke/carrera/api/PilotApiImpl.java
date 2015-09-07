@@ -1,19 +1,19 @@
 package com.zuehlke.carrera.api;
 
 import com.zuehlke.carrera.api.channel.RaceChannelNames;
-import com.zuehlke.carrera.api.client.Client;
-import com.zuehlke.carrera.api.seralize.Serializer;
 import com.zuehlke.carrera.relayapi.messages.*;
 
 import java.util.function.Consumer;
 
 public class PilotApiImpl implements PilotApi {
-    private final RaceChannelNames names;
-    private final ApiConnection connection;
 
-    public PilotApiImpl(Client client, RaceChannelNames names, Serializer serializer) {
-        this.names = names;
-        this.connection = new ApiConnection(client, serializer);
+
+    private final ApiConnection connection;
+    private final RaceChannelNames names;
+
+    public PilotApiImpl(ApiConnection apiConnection, RaceChannelNames raceChannelNames) {
+        this.connection = apiConnection;
+        this.names = raceChannelNames;
     }
 
     @Override

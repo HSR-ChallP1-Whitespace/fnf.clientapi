@@ -80,7 +80,7 @@ public class RaceTrackToRelayConnection extends RelayConnection {
             //RaceTrack announceMessage = new RaceTrack(clientId, RaceTrackType.SIMULATOR);
             announceMessage.setLink(optionalUrl);
             try {
-                client.stompSend(CHANNEL_ANNOUNCE, mapper.writeValueAsString(announceMessage));
+                client.publish(CHANNEL_ANNOUNCE, mapper.writeValueAsBytes(announceMessage));
             } catch (JsonProcessingException e) {
                 LOG.error("Can not JSON serialize announceMessage: " + announceMessage, e);
             }
@@ -159,30 +159,30 @@ public class RaceTrackToRelayConnection extends RelayConnection {
     }
 
 
-    private void onSpeedMessage(String message) {
+    private void onSpeedMessage(byte[] message) {
         try {
             PowerControl control = mapper.readValue(message, PowerControl.class);
             onSpeedControl.accept(control);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + new String(message), e);
         }
     }
 
-    private void onStartMessage(String message) {
+    private void onStartMessage(byte[] message) {
         try {
             RaceStartMessage start = mapper.readValue(message, RaceStartMessage.class);
             onRaceStart.accept(start);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + new String(message), e);
         }
     }
 
-    private void onStopMessage(String message) {
+    private void onStopMessage(byte[] message) {
         try {
             RaceStopMessage stop = mapper.readValue(message, RaceStopMessage.class);
             onRaceStop.accept(stop);
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + new String(message), e);
         }
     }
 

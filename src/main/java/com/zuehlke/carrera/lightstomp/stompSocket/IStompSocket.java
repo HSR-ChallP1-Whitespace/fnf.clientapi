@@ -2,7 +2,7 @@ package com.zuehlke.carrera.lightstomp.stompSocket;
 
 import com.zuehlke.carrera.lightstomp.StompFrame;
 
-public interface IStompSocket {
+public interface IStompSocket  {
 
     /**
      * @return true if this socket is connected
@@ -25,5 +25,7 @@ public interface IStompSocket {
      * @return the host to which this socket is connected
      */
     String getHost();
+
+    void disconnect();
 
 }

@@ -8,7 +8,7 @@ public interface Client {
 
     void disconnect();
 
-    void publish(String channelName, String message);
+    void publish(String channelName, byte[] message);
 
     void subscribe(String channelName, MessageReceiver receiver);
 }

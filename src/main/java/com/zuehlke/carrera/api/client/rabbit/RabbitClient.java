@@ -11,8 +11,16 @@ import java.util.concurrent.TimeoutException;
 public class RabbitClient implements Client {
     private static final Logger LOG = LoggerFactory.getLogger(RabbitClient.class);
     private final ChannelRegistry registry = new ChannelRegistry();
+    private final String teamId;
+    private final String accessCode;
     private boolean connected = false;
     private Connection connection;
+
+    public RabbitClient(String teamId, String accessCode) {
+
+        this.teamId = teamId;
+        this.accessCode = accessCode;
+    }
 
     @Override
     public boolean isConnected() {
@@ -73,7 +81,7 @@ public class RabbitClient implements Client {
     }
 
     @Override
-    public void publish(String channelName, String message) {
+    public void publish(String channelName, byte[] message) {
         try {
             tryPublish(channelName, message);
         } catch (IOException e) {
@@ -81,10 +89,10 @@ public class RabbitClient implements Client {
         }
     }
 
-    private void tryPublish(String channelName, String message) throws IOException {
+    private void tryPublish(String channelName, byte[] message) throws IOException {
         Channel channel = registry.getOrCreate(channelName, connection);
         AMQP.BasicProperties publishProperties = createPublishProperties();
-        channel.basicPublish("", channelName, publishProperties, message.getBytes());
+        channel.basicPublish("", channelName, publishProperties, message);
     }
 
     private AMQP.BasicProperties createPublishProperties() {
@@ -113,7 +121,7 @@ public class RabbitClient implements Client {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[]
                     body)
                     throws IOException {
-                receiver.receive(new String(body, "UTF-8"));
+                receiver.receive(body);
             }
         };
     }

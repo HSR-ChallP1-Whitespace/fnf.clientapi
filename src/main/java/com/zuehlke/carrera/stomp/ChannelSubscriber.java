@@ -1,6 +1,6 @@
 package com.zuehlke.carrera.stomp;
 
-import com.zuehlke.carrera.lightstomp.MessageListener;
+import com.zuehlke.carrera.api.client.MessageReceiver;
 
 /**
  * Links the name of a stomp channel to a consumer
@@ -8,9 +8,9 @@ import com.zuehlke.carrera.lightstomp.MessageListener;
 public class ChannelSubscriber {
 
     private final String channel;
-    private final MessageListener consumer;
+    private final MessageReceiver consumer;
 
-    public ChannelSubscriber(String channel, MessageListener consumer) {
+    public ChannelSubscriber(String channel, MessageReceiver consumer) {
         this.channel = channel;
         this.consumer = consumer;
     }
@@ -19,7 +19,7 @@ public class ChannelSubscriber {
         return channel;
     }
 
-    public MessageListener getConsumer() {
+    public MessageReceiver getConsumer() {
         return consumer;
     }
 }

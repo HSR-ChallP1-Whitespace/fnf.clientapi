@@ -1,5 +1,7 @@
 package com.zuehlke.carrera.lightstomp;
 
+import com.zuehlke.carrera.api.client.MessageReceiver;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.Map;
  */
 class SubscriptionRouter {
 
-    private final Map<String, List<MessageListener>> channelToListenerMap = new HashMap<>();
+    private final Map<String, List<MessageReceiver>> channelToListenerMap = new HashMap<>();
 
 
     /**
@@ -20,10 +22,10 @@ class SubscriptionRouter {
      * @param channel  The channel
      * @param listener the listener
      */
-    public synchronized void register(String channel, MessageListener listener) {
+    public synchronized void register(String channel, MessageReceiver listener) {
 
         // Channel map
-        List<MessageListener> listeners = channelToListenerMap.get(channel);
+        List<MessageReceiver> listeners = channelToListenerMap.get(channel);
         if (listeners == null) {
             listeners = new ArrayList<>();
             channelToListenerMap.put(channel, listeners);
@@ -38,11 +40,11 @@ class SubscriptionRouter {
      * @param channel the id of the simulator or pilot to route to
      * @param message the message to be routed
      */
-    public synchronized void routeMessage(String channel, String message) {
-        List<MessageListener> listeners = channelToListenerMap.get(channel);
+    public synchronized void routeMessage(String channel, byte[] message) {
+        List<MessageReceiver> listeners = channelToListenerMap.get(channel);
         if (listeners != null) {
-            for (MessageListener l : listeners) {
-                l.messageReceived(message);
+            for (MessageReceiver l : listeners) {
+                l.receive(message);
             }
         }
     }

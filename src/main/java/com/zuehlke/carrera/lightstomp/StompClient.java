@@ -1,5 +1,8 @@
 package com.zuehlke.carrera.lightstomp;
 
+import com.zuehlke.carrera.api.client.Client;
+import com.zuehlke.carrera.api.client.ClientConnectionException;
+import com.zuehlke.carrera.api.client.MessageReceiver;
 import com.zuehlke.carrera.lightstomp.impl.StompWebSocket;
 import com.zuehlke.carrera.lightstomp.stompSocket.ISocketListener;
 import com.zuehlke.carrera.lightstomp.stompSocket.IStompSocket;
@@ -14,13 +17,72 @@ import java.util.function.Consumer;
 /**
  * A simple STOMP client.
  */
-public class StompClient {
+public class StompClient implements Client {
 
     private final static Logger LOG = LoggerFactory.getLogger(StompClient.class);
-    private final IStompSocket socket;
+    private String teamId;
+    private String accessCode;
+    private IStompSocket socket;
     private final SubscriptionRouter subscriptionRouter = new SubscriptionRouter();
-    private final ISTOMPListener listener;
+    private ISTOMPListener listener;
     private boolean isConnected = false;
+
+
+    @Override
+    public void connect(String url) {
+
+        this.listener = listener;
+        if (isConnected) {
+            return;
+        }
+        try {
+            LOG.debug("Starting connection to stomp on " + url);
+            tryConnect(url);
+        } catch (URISyntaxException e) {
+            LOG.debug("Could not connect stomp client", e);
+            throw new ClientConnectionException("Could not connect stomp client", e);
+        }
+
+    }
+
+    private void tryConnect(String url) throws URISyntaxException {
+        URI serverUrl = new URI(url);
+
+        ISTOMPListener listener = new ISTOMPListener() {
+
+            @Override
+            public void connectionSuccess(StompClient connection) {
+
+            }
+
+            @Override
+            public void connectionFailed(Throwable cause) {
+
+            }
+
+            @Override
+            public void disconnected(String reason) {
+
+            }
+        };
+
+        this.listener = listener;
+        socket = new StompWebSocket(serverUrl);
+        socket.connect(new SocketListener(teamId, accessCode));
+    }
+
+    @Override
+    public void disconnect() {
+        socket.disconnect();
+
+    }
+
+    @Override
+    public void publish(String channelName, byte[] message) {
+        stompSend(channelName, new String(message));
+    }
+
+
     /**
      * Creates a new StompClient using the given socket
      *
@@ -32,33 +94,51 @@ public class StompClient {
     private StompClient(IStompSocket socket, final String user, final String password, ISTOMPListener listener) {
         this.listener = listener;
         this.socket = socket;
+        this.socket.connect(new SocketListener(user, password));
+    }
 
-        this.socket.connect(new ISocketListener() {
-            @Override
-            public void connected() {
-                // The underling socket has connected, now we can connect with the
-                // STOMP protocol
-                stompConnect(user, password);
-            }
+    private class SocketListener implements ISocketListener {
 
-            @Override
-            public void onStompFrameReceived(StompFrame frame) {
-                stompFrameReceived(frame);
-            }
+        private final String user;
+        private final String password;
 
-            @Override
-            public void closed(String reason) {
-                // The underling socket died
-                LOG.debug("Underling Websocket has closed: " + reason);
-                handleServerDisconnected(reason);
-            }
+        public SocketListener(String user, String password) {
 
-            @Override
-            public void connectionFailed(Throwable e) {
-                LOG.debug("Underling Websocket could not connect!", e);
-                handleCanNotConnect(e);
-            }
-        });
+            this.user = user;
+            this.password = password;
+        }
+
+        @Override
+        public void connected() {
+            // The underling socket has connected, now we can connect with the
+            // STOMP protocol
+            stompConnect(user, password);
+        }
+
+        @Override
+        public void onStompFrameReceived(StompFrame frame) {
+            stompFrameReceived(frame);
+        }
+
+        @Override
+        public void closed(String reason) {
+            // The underling socket died
+            LOG.debug("Underling Websocket has closed: " + reason);
+            handleServerDisconnected(reason);
+        }
+
+        @Override
+        public void connectionFailed(Throwable e) {
+            LOG.debug("Underling Websocket could not connect!", e);
+            handleCanNotConnect(e);
+        }
+
+    }
+
+    public StompClient(String teamId, String accessCode) {
+
+        this.teamId = teamId;
+        this.accessCode = accessCode;
     }
 
     /**
@@ -94,6 +174,7 @@ public class StompClient {
         return isConnected;
     }
 
+
     /**
      * Send the given text message to the given channel
      *
@@ -114,7 +195,8 @@ public class StompClient {
      * @param channel  the channel
      * @param listener the listener
      */
-    public void subscribe(String channel, MessageListener listener) {
+    @Override
+    public void subscribe(String channel, MessageReceiver listener) {
 
         // We use a global unique id for the subscription to simplify subscription mapping on
         // our side.
@@ -189,7 +271,7 @@ public class StompClient {
     private void handleServerMessage(StompFrame frame) {
         String channel = frame.getHeaderValue("destination");
         if (channel != null) {
-            subscriptionRouter.routeMessage(channel, frame.getBody());
+            subscriptionRouter.routeMessage(channel, frame.getBody().getBytes());
         } else {
             LOG.warn("Message frame was missing destination!");
         }

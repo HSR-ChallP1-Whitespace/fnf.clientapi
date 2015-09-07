@@ -2,6 +2,7 @@ package com.zuehlke.carrera.stomp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zuehlke.carrera.api.client.Client;
 import com.zuehlke.carrera.lightstomp.ISTOMPListener;
 import com.zuehlke.carrera.lightstomp.StompClient;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public abstract class RelayConnection {
     protected final String password;
     protected final String clientId;
 
-    protected StompClient client;
+    protected Client client;
     protected volatile boolean connecting = false;
 
     private long lastWarning = 0;
@@ -116,7 +117,7 @@ public abstract class RelayConnection {
         }
     }
 
-    private void onPingMessage(String message) {
+    private void onPingMessage(byte[] message) {
         try {
             PingData ping = mapper.readValue(message, PingData.class);
 
@@ -126,7 +127,7 @@ public abstract class RelayConnection {
             }
 
         } catch (IOException e) {
-            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + message, e);
+            LOG.error("Could not parse JSON from STOMP message: " + System.lineSeparator() + new String(message), e);
         }
     }
 
@@ -141,11 +142,11 @@ public abstract class RelayConnection {
         if (channel == null) throw new IllegalArgumentException("channel must not be NULL!");
         if (message == null) throw new IllegalArgumentException("message must not be NULL!");
 
-        StompClient myClient = client;
+        Client myClient = client;
         if (myClient != null && myClient.isConnected()) {
             try {
-                String jsonMessage = mapper.writeValueAsString(message);
-                myClient.stompSend(channel, jsonMessage);
+                byte[] jsonMessage = mapper.writeValueAsBytes(message);
+                myClient.publish(channel, jsonMessage);
                 return true;
             } catch (JsonProcessingException e) {
                 LOG.error("Can not send message since JSON serialisation failed!", e);
