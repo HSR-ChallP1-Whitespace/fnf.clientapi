@@ -23,14 +23,13 @@ public class PowerControl implements Serializable {
      */
     protected PowerControl() {
     }
-
-
     /**
      * @param p          the power value
      * @param teamId     the team id
      * @param accessCode the team's access code
      * @param timestamp  the current timestamp
      */
+
     public PowerControl(int p, String teamId, String accessCode, long timestamp) {
 
         this.p = p;

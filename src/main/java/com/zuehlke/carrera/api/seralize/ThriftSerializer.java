@@ -1,19 +1,23 @@
 package com.zuehlke.carrera.api.seralize;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
 
 /**
  * Created by arbe on 25.08.2015.
  */
 public class ThriftSerializer implements Serializer {
 
-    ThriftMapper thriftMapper = new ThriftMapper();
+
+    TBinaryProtocol.Factory factory = new TBinaryProtocol.Factory();
 
     @Override
     public byte[] serialize(Object o) {
 
+
         byte[] serializedObject = null;
         try {
+            ThriftMapper thriftMapper = new ThriftMapper(factory);
             serializedObject = thriftMapper.writeValueAsBytes(o);
 
         } catch (TException e) {
@@ -23,9 +27,10 @@ public class ThriftSerializer implements Serializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] message, Class<T> messageType) {
+    public synchronized <T> T deserialize(byte[] message, Class<T> messageType) {
         T deserializeObject = null;
         try {
+            ThriftMapper thriftMapper = new ThriftMapper(factory);
             deserializeObject = thriftMapper.readValue(message, messageType);
         } catch (TException e) {
             throw new DeserializationException("Could not deserialize message", e);

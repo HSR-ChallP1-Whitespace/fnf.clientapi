@@ -15,11 +15,17 @@ import java.util.List;
  */
 public class ThriftMapper {
 
-    private TSerializer thriftSerializer = new TSerializer(new TBinaryProtocol.Factory());
-    private TDeserializer thriftDeserializer = new TDeserializer(new TBinaryProtocol.Factory());
+
+    private TBinaryProtocol.Factory factory;
+
+    public ThriftMapper(TBinaryProtocol.Factory  factory) {
+
+        this.factory = factory;
+    }
 
     public <T> T readValue(byte[] message, Class<T> messageType) throws TException {
 
+         TDeserializer thriftDeserializer = new TDeserializer(factory);
 
         T deserializedObject = null;
         if (PenaltyMessage.class.isAssignableFrom(messageType)) {
@@ -119,6 +125,8 @@ public class ThriftMapper {
 
 
     public byte[] writeValueAsBytes(Object object) throws TException {
+
+        TSerializer thriftSerializer = new TSerializer(factory);
         byte[] serilazedObject = null;
 
         if (object instanceof PenaltyMessage) {

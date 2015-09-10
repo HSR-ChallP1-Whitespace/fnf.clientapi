@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-class ApiConnection {
+public class ApiConnection {
     private static final Logger LOG = LoggerFactory.getLogger(ApiConnection.class);
     private final List<Subscription> subscriptions = new ArrayList<>();
     private final Client client;

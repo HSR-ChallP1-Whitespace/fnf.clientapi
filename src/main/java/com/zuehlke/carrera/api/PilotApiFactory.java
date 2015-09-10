@@ -9,18 +9,32 @@ import com.zuehlke.carrera.api.seralize.Serializer;
 import com.zuehlke.carrera.api.seralize.SerializerFactory;
 import com.zuehlke.carrera.api.seralize.SerializerType;
 
+import java.util.Properties;
+
 
 /**
  * Created by arbe on 01.09.2015.
  */
 public class PilotApiFactory {
 
-    public static PilotApi create() {
+    public static final String TEAM_ID_KEY = "teamId";
+    public static final String ACCESS_CODE_KEY = "accessCode";
+    public static final String CLIENT_KEY = "client";
+    public static final String SERIALIZER_KEY = "serializer";
 
-        String teamId = System.getProperty("teamId");
-        String accessCode = System.getProperty("accessCode");
-        String clientType = System.getProperty("client", "rabbit");
-        String serializerType = System.getProperty("serializer", "jackson");
+    public static final String CLIENT_STOMP = "stomp";
+    public static final String CLIENT_RABBIT = "rabbit";
+
+    public static final String SERIALIZER_JACKSON = "jackson";
+    public static final String SERIALIZER_THRIFT = "thrift";
+
+
+    public static PilotApi create(Properties properties) {
+
+        String teamId = properties.getProperty(TEAM_ID_KEY);
+        String accessCode = properties.getProperty(ACCESS_CODE_KEY);
+        String clientType = properties.getProperty(CLIENT_KEY);
+        String serializerType = properties.getProperty(SERIALIZER_KEY);
 
         RaceChannelNames raceChannelNames = new PilotToRelayChannelNames(teamId);
 
@@ -33,7 +47,7 @@ public class PilotApiFactory {
     }
 
     private static ClientType findClientType(String serializerType) {
-        if (serializerType.equals("rabbit")) {
+        if (serializerType.equals(CLIENT_RABBIT)) {
             return ClientType.RABBIT_CLIENT;
         } else {
             return ClientType.STOMP_CLIENT;
@@ -41,7 +55,7 @@ public class PilotApiFactory {
     }
 
     private static SerializerType findSerializerType(String serializerType) {
-        if (serializerType.equals("jackson")) {
+        if (serializerType.equals(SERIALIZER_JACKSON)) {
             return SerializerType.JACKSON_SERIALIZER.JACKSON_SERIALIZER;
         } else {
             return SerializerType.THRIFT_SERIALIZER;
