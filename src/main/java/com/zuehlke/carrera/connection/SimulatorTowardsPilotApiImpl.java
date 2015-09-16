@@ -1,5 +1,7 @@
-package com.zuehlke.carrera.api;
+package com.zuehlke.carrera.connection;
 
+
+import com.zuehlke.carrera.api.ApiConnection;
 import com.zuehlke.carrera.api.channel.RaceChannelNames;
 import com.zuehlke.carrera.api.client.Client;
 import com.zuehlke.carrera.api.seralize.Serializer;
@@ -7,18 +9,17 @@ import com.zuehlke.carrera.relayapi.messages.*;
 
 import java.util.function.Consumer;
 
-public class SimulatorApiImpl implements SimulatorApi {
-    private final ApiConnection connection;
-    private final RaceChannelNames names;
+/**
+ *
+ */
+public class SimulatorTowardsPilotApiImpl implements TowardsPilotApi {
 
-    public SimulatorApiImpl(RaceChannelNames names, Client client, Serializer serializer) {
+    RaceChannelNames names;
+    ApiConnection connection;
+
+    public SimulatorTowardsPilotApiImpl(Client client, RaceChannelNames names, Serializer serializer) {
         this.names = names;
         this.connection = new ApiConnection(client, serializer);
-    }
-
-    @Override
-    public void announce(RaceTrack message) {
-        connection.publishTo(names.announce(), message);
     }
 
     @Override
@@ -42,18 +43,18 @@ public class SimulatorApiImpl implements SimulatorApi {
     }
 
     @Override
+    public void raceStart(RaceStartMessage message) {
+        connection.publishTo(names.raceStart(), message);
+    }
+
+    @Override
+    public void raceStop(RaceStopMessage message) {
+        connection.publishTo(names.raceStop(), message);
+    }
+
+    @Override
     public void onPowerControl(Consumer<PowerControl> onPowerControl) {
         connection.subscribeTo(names.powerControl(), onPowerControl, PowerControl.class);
-    }
-
-    @Override
-    public void onRaceStart(Consumer<RaceStartMessage> onRaceStart) {
-        connection.subscribeTo(names.raceStart(), onRaceStart, RaceStartMessage.class);
-    }
-
-    @Override
-    public void onRaceStop(Consumer<RaceStopMessage> onRaceStop) {
-        connection.subscribeTo(names.raceStop(), onRaceStop, RaceStopMessage.class);
     }
 
     @Override

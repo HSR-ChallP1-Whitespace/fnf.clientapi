@@ -52,8 +52,8 @@ public class PilotApiImpl implements PilotApi {
     }
 
     @Override
-    public void onRoundPassed(Consumer<RoundPassedMessage> onRoundPassed) {
-        connection.subscribeTo(names.roundPassed(), onRoundPassed, RoundPassedMessage.class);
+    public void onRoundPassed(Consumer<RoundTimeMessage> onRoundPassed) {
+        connection.subscribeTo(names.roundPassed(), onRoundPassed, RoundTimeMessage.class);
     }
 
     @Override

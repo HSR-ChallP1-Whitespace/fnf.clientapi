@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-class ApiConnection {
+public class ApiConnection {
     private static final Logger LOG = LoggerFactory.getLogger(ApiConnection.class);
     private final List<Subscription> subscriptions = new ArrayList<>();
     private final Client client;
@@ -33,11 +33,11 @@ class ApiConnection {
 
     public void publishTo(String channelName, Object message) {
         if (client.isConnected()) {
-            LOG.info("Publishing to " + channelName);
+            LOG.trace("Publishing to " + channelName);
             client.publish(channelName, serializer.serialize(message));
             return;
         }
-        LOG.info("Publishing to " + channelName + " skipped, not connected yet");
+        LOG.warn("Publishing to " + channelName + " skipped, not connected yet");
     }
 
     public <T> void subscribeTo(String channelName, Consumer<T> onMessage, Class<T> messageType) {
@@ -47,7 +47,7 @@ class ApiConnection {
 
     private <T> Subscription subscriptionFor(String channel, Consumer<T> consumer, Class<T> messageType) {
         return new Subscription(channel, message -> {
-            LOG.info("Receiving message in channel " + channel);
+            LOG.trace("Receiving message in channel " + channel);
             consumer.accept(serializer.deserialize(message, messageType));
         });
     }

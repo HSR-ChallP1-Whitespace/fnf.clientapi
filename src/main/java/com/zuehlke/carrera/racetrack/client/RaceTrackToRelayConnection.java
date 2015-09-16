@@ -24,6 +24,7 @@ public class RaceTrackToRelayConnection extends RelayConnection {
     private static final String CHANNEL_SENSOR_EVENTS = "/app/racetracks/events";
     private static final String CHANNEL_VELOCITY = "/app/racetracks/velocity";
     private static final String CHANNEL_PENALTY = "/app/racetracks/penalty";
+    private static final String CHANNEL_ROUND_TIME = "/app/racetracks/roundtime";
     private static final String CHANNEL_ROUND_PASSED = "/app/racetracks/roundPassed";
     // inbound channels
     private static final String CHANNEL_SPEED_TEMPLATE = "/topic/racetracks/{id}/speed";
@@ -108,9 +109,9 @@ public class RaceTrackToRelayConnection extends RelayConnection {
         return sendObject(CHANNEL_PENALTY, penaltyMessage);
     }
 
-    public boolean send(RoundPassedMessage roundPassedMessage) {
-        if (roundPassedMessage == null) throw new IllegalArgumentException("round-passed Message must not be NULL!");
-        return sendObject(CHANNEL_ROUND_PASSED, roundPassedMessage);
+    public boolean send(RoundTimeMessage roundTimeMessage) {
+        if (roundTimeMessage == null) throw new IllegalArgumentException("round-passed Message must not be NULL!");
+        return sendObject(CHANNEL_ROUND_PASSED, roundTimeMessage);
     }
 
     protected synchronized void connect() {

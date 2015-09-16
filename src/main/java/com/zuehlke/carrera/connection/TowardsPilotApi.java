@@ -1,12 +1,14 @@
-package com.zuehlke.carrera.api;
+package com.zuehlke.carrera.connection;
 
+import com.zuehlke.carrera.api.Api;
 import com.zuehlke.carrera.relayapi.messages.*;
 
 import java.util.function.Consumer;
 
-public interface SimulatorApi extends Api {
-
-    void announce(RaceTrack message);
+/**
+ *  the "inverse" of the PilotApi
+ */
+public interface TowardsPilotApi extends Api {
 
     void sensor(SensorEvent message);
 
@@ -16,9 +18,11 @@ public interface SimulatorApi extends Api {
 
     void roundPassed(RoundTimeMessage message);
 
+    void raceStart(RaceStartMessage message);
+
+    void raceStop(RaceStopMessage message);
+
     void onPowerControl(Consumer<PowerControl> onPowerControl);
 
-    void onRaceStart(Consumer<RaceStartMessage> onRaceStart);
 
-    void onRaceStop(Consumer<RaceStopMessage> onRaceStop);
 }

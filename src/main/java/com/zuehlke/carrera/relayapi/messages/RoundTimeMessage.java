@@ -20,6 +20,13 @@ public class RoundTimeMessage {
         this.roundDuration = roundDuration;
     }
 
+    public RoundTimeMessage(String track, long timestamp) {
+        this.timestamp = timestamp;
+        this.track = track;
+        this.team = null;
+        this.roundDuration = Long.MAX_VALUE;
+    }
+
     public long getRoundDuration() {
         return roundDuration;
     }

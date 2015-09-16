@@ -7,7 +7,7 @@ public class PilotToSimulatorChannelNames implements RaceChannelNames {
     private static final String SENSOR = "/app/racetracks/events";
     private static final String VELOCITY = "/app/racetracks/velocity";
     private static final String PENALTY = "/app/racetracks/penalty";
-    private static final String ROUND_PASSED = "/app/racetracks/roundPassed";
+    private static final String ROUND_PASSED = "/app/racetracks/roundtime";
     private static final String POWER_TEMPLATE = "/topic/racetracks/{id}/speed";
     private static final String START_TEMPLATE = "/topic/racetracks/{id}/start";
     private static final String STOP_TEMPLATE = "/topic/racetracks/{id}/stop";

@@ -20,5 +20,5 @@ public interface PilotApi extends Api {
 
     void onSensor(Consumer<SensorEvent> onSensor);
 
-    void onRoundPassed(Consumer<RoundPassedMessage> onRoundPassed);
+    void onRoundPassed(Consumer<RoundTimeMessage> onRoundPassed);
 }

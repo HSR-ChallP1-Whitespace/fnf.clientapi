@@ -8,7 +8,7 @@ public class PilotToRelayChannelNames implements RaceChannelNames {
     private static final String SENSOR_TEMPLATE = "/topic/pilots/{id}/sensor";
     private static final String VELOCITY_TEMPLATE = "/topic/pilots/{id}/velocity";
     private static final String PENALTY_TEMPLATE = "/topic/pilots/{id}/penalty";
-    private static final String ROUND_PASSED_TEMPLATE = "/topic/pilots/{id}/roundPassed";
+    private static final String ROUND_PASSED_TEMPLATE = "/topic/pilots/{id}/roundtime";
     private static final String ANNOUNCE = "/app/pilots/announce";
     private static final String POWER = "/app/pilots/power";
     private final String clientId;
