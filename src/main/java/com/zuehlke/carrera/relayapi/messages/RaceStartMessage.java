@@ -8,16 +8,17 @@ package com.zuehlke.carrera.relayapi.messages;
 public class RaceStartMessage extends StandardMessage {
 
     private String trackId;
-    private RaceType type;
+    private String type;
     private String teamId;
     private String description;
     private boolean recordData;
+    private RaceActivityMetadata metadata;
 
     // for serialization purposes
     public RaceStartMessage() {
     }
 
-    public RaceStartMessage(String trackId, RaceType type, String teamId, long timestamp,
+    public RaceStartMessage(String trackId, String type, String teamId, long timestamp,
                             String description, boolean recordData) {
         this.trackId = trackId;
         this.type = type;
@@ -35,11 +36,11 @@ public class RaceStartMessage extends StandardMessage {
         this.trackId = trackId;
     }
 
-    public RaceType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(RaceType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -61,5 +62,17 @@ public class RaceStartMessage extends StandardMessage {
 
     public void setRecordData(boolean recordData) {
         this.recordData = recordData;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public RaceActivityMetadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(RaceActivityMetadata metadata) {
+        this.metadata = metadata;
     }
 }

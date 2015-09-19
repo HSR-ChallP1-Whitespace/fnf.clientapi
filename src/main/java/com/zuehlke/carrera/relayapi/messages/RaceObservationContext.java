@@ -4,11 +4,11 @@ public class RaceObservationContext {
 
     private String teamId;
     private String trackId;
-    private RaceType raceType;
+    private String raceType;
     private long startTime;
     private String observable;
 
-    public RaceObservationContext(String teamId, String trackId, String observable, RaceType raceType, long startTime) {
+    public RaceObservationContext(String teamId, String trackId, String observable, String raceType, long startTime) {
         this.teamId = teamId;
         this.trackId = trackId;
         this.observable = observable;
@@ -24,7 +24,7 @@ public class RaceObservationContext {
         return trackId;
     }
 
-    public RaceType getRaceType() {
+    public String getRaceType() {
         return raceType;
     }
 

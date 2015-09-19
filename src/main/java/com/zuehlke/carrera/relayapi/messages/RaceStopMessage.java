@@ -9,9 +9,9 @@ public class RaceStopMessage extends StandardMessage {
     private String trackId;
     private String teamId;
     private long timeStamp;
-    private RaceType raceType;
+    private String raceType;
 
-    public RaceStopMessage(String trackId, String teamId, long timeStamp, RaceType raceType) {
+    public RaceStopMessage(String trackId, String teamId, long timeStamp, String raceType) {
         this.trackId = trackId;
         this.teamId = teamId;
         this.timeStamp = timeStamp;
@@ -52,11 +52,11 @@ public class RaceStopMessage extends StandardMessage {
         this.timeStamp = timeStamp;
     }
 
-    public RaceType getRaceType() {
+    public String getRaceType() {
         return raceType;
     }
 
-    public void setRaceType(RaceType raceType) {
+    public void setRaceType(String raceType) {
         this.raceType = raceType;
     }
 }

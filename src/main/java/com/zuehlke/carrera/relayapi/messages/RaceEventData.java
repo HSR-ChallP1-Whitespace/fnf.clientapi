@@ -23,13 +23,13 @@ public class RaceEventData {
     private long startTime;
     private String teamId;
     private String trackId;
-    private RaceType raceType;
+    private String raceType;
 
     private List<SensorEvent> sensorEvents = new ArrayList<>();
     private List<PowerControl> powerControls = new ArrayList<>();
     private List<VelocityMessage> velocityMessages = new ArrayList<>();
 
-    public RaceEventData(long startTime, String teamId, String trackId, RaceType raceType) {
+    public RaceEventData(long startTime, String teamId, String trackId, String raceType) {
         this.startTime = startTime;
         this.teamId = teamId;
         this.trackId = trackId;
@@ -68,7 +68,7 @@ public class RaceEventData {
         return trackId;
     }
 
-    public RaceType getRaceType() {
+    public String getRaceType() {
         return raceType;
     }
 
