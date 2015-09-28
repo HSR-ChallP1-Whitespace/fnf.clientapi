@@ -4,14 +4,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zuehlke.fastandfurious</groupId>
+    <groupId>ch.hsr.whitespace</groupId>
     <artifactId>fnf.clientapi</artifactId>
     <version>1.1.7-SNAPSHOT</version>
 
     <scm>
-        <connection>scm:git:https://github.com/FastAndFurious/client-commons-api.git</connection>
-        <url>https://github.com/FastAndFurious/client-commons-api.git</url>
-        <tag>v1.1.3</tag>
+        <connection>scm:git:git@github.com:HSR-ChallP1-Whitespace/fnf.clientapi.git</connection>
+        <url>https://github.com/HSR-ChallP1-Whitespace/fnf.clientapi</url>
     </scm>
 
     <dependencies>
@@ -238,8 +237,8 @@
         </repository>
 
         <repository>
-            <id>bintray</id>
-            <url>http://dl.bintray.com/fastandfurious/FastAndFurious/</url>
+            <id>challp1-fastandfurious-releases</id>
+            <url>http://nexus.kapfi.ch/nexus/content/repositories/challp1-fastandfurious-releases/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -251,8 +250,8 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/fastandfurious/FastAndFurious/fnf.client-api</url>
+            <id>challp1-fastandfurious-snapshots</id>
+            <url>http://nexus.kapfi.ch/nexus/content/repositories/challp1-fastandfurious-snapshots</url>
         </repository>
     </distributionManagement>
 </project>
