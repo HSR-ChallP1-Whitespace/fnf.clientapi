@@ -249,9 +249,13 @@
     </repositories>
 
     <distributionManagement>
-        <repository>
+        <snapshotRepository>
             <id>challp1-fastandfurious-snapshots</id>
             <url>http://nexus.kapfi.ch/nexus/content/repositories/challp1-fastandfurious-snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>challp1-fastandfurious-releases</id>
+            <url>http://nexus.kapfi.ch/nexus/content/repositories/challp1-fastandfurious-releases</url>
         </repository>
     </distributionManagement>
 </project>
