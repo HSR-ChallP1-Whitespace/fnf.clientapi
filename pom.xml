@@ -5,12 +5,12 @@
 
     <groupId>ch.hsr.whitespace</groupId>
     <artifactId>fnf.clientapi</artifactId>
-    <version>1.1.8-SNAPSHOT</version>
+    <version>1.1.8</version>
 
     <scm>
         <connection>scm:git:git@github.com:HSR-ChallP1-Whitespace/fnf.clientapi.git</connection>
         <url>https://github.com/HSR-ChallP1-Whitespace/fnf.clientapi</url>
-      <tag>HEAD</tag>
+      <tag>fnf.clientapi-1.1.8</tag>
   </scm>
 
     <dependencies>
